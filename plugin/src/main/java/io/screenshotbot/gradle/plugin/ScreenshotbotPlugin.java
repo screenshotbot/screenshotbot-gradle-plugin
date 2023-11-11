@@ -27,12 +27,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                     tasks.stream().forEach((task) -> {
 
                         if (task.getName().startsWith("recordPaparazzi")) {
-                            tasks.register(task.getName() + "Screenshotbot",
-                                            RecordPaparazziTask.class)
-                                    .configure((it) -> {
-                                        it.setGroup(VERIFICATION_GROUP);
-                                        it.setDescription("Records paparazzi screenshots into Screenshotbot");
-                                    });
+                            prepareRecordTask(task, tasks);
                         }
                     });
                 });
@@ -40,5 +35,18 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         };
         project.getPlugins().withId("app.cash.paparazzi", action);
 
+    }
+
+    private void prepareRecordTask(Task task, TaskContainer tasks) {
+        tasks.register(task.getName() + "Screenshotbot",
+                        RecordPaparazziTask.class)
+                .configure((it) -> {
+                    it.setGroup(VERIFICATION_GROUP);
+                    it.setDescription("Records paparazzi screenshots into Screenshotbot");
+                    it.doFirst((it2) -> {
+                       System.out.println("ACTION!");
+                    });
+                    it.dependsOn(task.getName());
+                });
     }
 }
