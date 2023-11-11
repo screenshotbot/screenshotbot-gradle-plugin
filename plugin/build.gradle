@@ -7,34 +7,40 @@
  */
 
 plugins {
-    // Apply the groovy Plugin to add support for Groovy.
     id 'java-gradle-plugin'
-    id 'maven-publish'
-    // Apply the java-library plugin for API and implementation separation.
+    id 'com.gradle.plugin-publish' version '1.1.0'
 }
 
-gradlePlugin {
-    plugins {
-        simplePlugin {
-            id = 'io.screenshotbot.gradle.plugin'
-            implementationClass = 'io.screenshotbot.gradle.plugin.ScreenshotbotPlugin'
-        }
-    }
-}
+
+group 'io.screenshotbot'
+version '1.1'
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
 dependencies {
-    // Use the latest Groovy version for building this library
-    implementation 'org.codehaus.groovy:groovy-all:3.0.18'
+}
 
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:32.1.1-jre'
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'io.screenshotbot.plugin'
+            displayName = 'Screenshotbot Gradle Plugin'
+            description = 'Automates most of the integration with Screenshotbot'
+            implementationClass = 'io.screenshotbot.gradle.plugin.ScreenshotbotPlugin'
+        }
+    }
+}
 
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api 'org.apache.commons:commons-math3:3.6.1'
+publishing {
+    repositories {
+        maven {
+            name = 'myLocal'
+            url = '/home/arnold/myLocal'
+        }
+    }
 }
 
 testing {
