@@ -8,12 +8,18 @@
 
 plugins {
     // Apply the groovy Plugin to add support for Groovy.
-    id 'groovy'
-
+    id 'java-gradle-plugin'
     // Apply the java-library plugin for API and implementation separation.
-    id 'java-library'
 }
 
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'io.screenshotbot.gradle.plugin'
+            implementationClass = 'io.screenshotbot.gradle.plugin.ScreenshotbotPlugin'
+        }
+    }
+}
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
