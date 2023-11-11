@@ -13,3 +13,4 @@ plugins {
 
 rootProject.name = 'screenshotbot-gradle'
 include('lib')
+include ':plugin'
