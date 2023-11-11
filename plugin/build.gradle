@@ -9,6 +9,7 @@
 plugins {
     // Apply the groovy Plugin to add support for Groovy.
     id 'java-gradle-plugin'
+    id 'maven-publish'
     // Apply the java-library plugin for API and implementation separation.
 }
 
