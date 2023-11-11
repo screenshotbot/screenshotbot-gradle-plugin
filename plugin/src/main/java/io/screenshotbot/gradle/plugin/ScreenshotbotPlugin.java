@@ -32,6 +32,10 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                                     .configure((it) -> {
                                         it.setGroup(VERIFICATION_GROUP);
                                         it.setDescription("Records paparazzi screenshots into Screenshotbot");
+                                        it.doFirst((it2) -> {
+                                           System.out.println("ACTION!");
+                                        });
+                                        it.dependsOn(task.getName());
                                     });
                         }
                     });
