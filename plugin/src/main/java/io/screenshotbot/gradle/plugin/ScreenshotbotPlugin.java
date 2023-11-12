@@ -2,8 +2,16 @@ package io.screenshotbot.gradle.plugin;
 
 import groovy.lang.Closure;
 import org.gradle.api.*;
+import org.gradle.api.file.Directory;
 import org.gradle.api.tasks.TaskContainer;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static org.gradle.api.plugins.JavaBasePlugin.VERIFICATION_GROUP;
 
 public class ScreenshotbotPlugin implements Plugin<Project> {
@@ -27,7 +35,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                     tasks.stream().forEach((task) -> {
 
                         if (task.getName().startsWith("recordPaparazzi")) {
-                            prepareRecordTask(task, tasks);
+                            prepareRecordTask(task, tasks, project);
                         }
                     });
                 });
@@ -37,7 +45,11 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
     }
 
-    private void prepareRecordTask(Task task, TaskContainer tasks) {
+    private void prepareRecordTask(Task task, TaskContainer tasks, Project project) {
+        String backupSnapshots = task.getName() + "BackupSnapshots";
+        String restoreSnapshots = task.getName() + "RestoreSnapshots";
+
+        task.mustRunAfter(backupSnapshots);
         tasks.register(task.getName() + "Screenshotbot",
                         RecordPaparazziTask.class)
                 .configure((it) -> {
@@ -47,6 +59,62 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                        System.out.println("ACTION!");
                     });
                     it.dependsOn(task.getName());
+                    it.dependsOn(backupSnapshots);
+                    it.dependsOn(restoreSnapshots);
+
                 });
+        tasks.register(backupSnapshots).configure((it) -> {
+            it.doFirst((it2) -> {
+                backupDir(getSnapshotsDir(project));
+            });
+        });
+
+        tasks.register(restoreSnapshots)
+                .configure((it) -> {
+                    it.mustRunAfter(task.getName());
+                    it.doFirst((innerTask) -> {
+                        restoreDir(getSnapshotsDir(project));
+                    });
+                });
+    }
+
+    private void restoreDir(Directory snapshotsDir) {
+        String backupDir = snapshotsDir.getAsFile().toString() + "-screenshotbot-backup";
+
+        deleteDirectory(snapshotsDir.getAsFile());
+
+        if (new File(backupDir).exists()) {
+            try {
+                Files.move(Path.of(backupDir), snapshotsDir.getAsFile().toPath());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void deleteDirectory(File asFile) {
+        for (File file : asFile.listFiles()) {
+            file.delete();
+        }
+        asFile.delete();
+    }
+
+
+    @NotNull
+    private static Directory getSnapshotsDir(Project project) {
+        return project.getLayout().getProjectDirectory().dir("src/test/snapshots");
+    }
+
+    private void backupDir(Directory dir) {
+        try {
+            String dest = dir.getAsFile().toString() + "-screenshotbot-backup";
+            // This isn't ideal.. but if the directory already exists, let's assume it was a previous backup, so we should restore it.
+            if (!new File(dest).exists()) {
+                Files.move(dir.getAsFile().toPath(),
+                        Path.of(dest), ATOMIC_MOVE);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
