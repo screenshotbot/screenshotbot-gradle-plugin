@@ -35,8 +35,9 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                     tasks.stream().forEach((task) -> {
 
                         if (task.getName().startsWith("recordPaparazzi")) {
-                            prepareRecordTask(task, tasks, project);
-                        }
+                            prepareTask(task, tasks, project, "record");
+                            prepareTask(task, tasks, project, "verify");                                             }
+
                     });
                 });
             }
@@ -45,20 +46,24 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
     }
 
-    private void prepareRecordTask(Task task, TaskContainer tasks, Project project) {
-        String backupSnapshots = task.getName() + "BackupSnapshots";
-        String restoreSnapshots = task.getName() + "RestoreSnapshots";
-        String uploadSnapshots = task.getName() + "UploadSnapshots";
+
+    private void prepareTask(Task task, TaskContainer tasks, Project project, String mode) {
+        String _taskName = task.getName();
+        if (mode.equals("verify")) {
+            _taskName = "verify" + task.getName().substring("record".length());
+        }
+
+        String taskName = _taskName;
+        String backupSnapshots = taskName + "BackupSnapshots";
+        String restoreSnapshots = taskName + "RestoreSnapshots";
+        String uploadSnapshots = taskName + "UploadSnapshots";
 
         task.mustRunAfter(backupSnapshots);
-        tasks.register(task.getName() + "Screenshotbot",
+        tasks.register(taskName + "Screenshotbot",
                         RecordPaparazziTask.class)
                 .configure((it) -> {
                     it.setGroup(VERIFICATION_GROUP);
                     it.setDescription("Records paparazzi screenshots into Screenshotbot");
-                    it.doFirst((it2) -> {
-                       System.out.println("ACTION!");
-                    });
                     it.dependsOn(task.getName());
                     it.dependsOn(backupSnapshots);
                     it.dependsOn(uploadSnapshots);
@@ -75,6 +80,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                         .configure((it) -> {
                                 it.directory = new File(getSnapshotsDir(project).getAsFile(), "images");
                                 it.channel = project.getPath();
+                                it.mode = mode;
 
                                 it.mustRunAfter(task.getName());
                                 it.doFirst((innerTask) -> {
