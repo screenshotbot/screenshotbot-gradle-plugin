@@ -73,11 +73,11 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                         .configure((it) -> {
-                            it.directory = getSnapshotsDir(project).getAsFile();
-                            it.channel = project.getPath();
+                                it.directory = new File(getSnapshotsDir(project).getAsFile(), "images");
+                                it.channel = project.getPath();
 
-                            it.mustRunAfter(task.getName());
-                            it.doFirst((innerTask) -> {
+                                it.mustRunAfter(task.getName());
+                                it.doFirst((innerTask) -> {
 
                             });
                         });
