@@ -92,11 +92,23 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         }
     }
 
+    private void safeDelete(File file) {
+        if (!file.delete()) {
+            throw new RuntimeException("Could not delete: " + file);
+        }
+    }
     private void deleteDirectory(File asFile) {
         for (File file : asFile.listFiles()) {
-            file.delete();
+            // I want to avoid having bugs here that accidently delete outside of this directory, and
+            // I don't want dependencies, so I'll hardcode some of the directories I'm allowed to recurse
+            // into
+            if (file.isDirectory() && file.getName().equals("images")) {
+                deleteDirectory(file);
+            } else {
+                safeDelete(file);
+            }
         }
-        asFile.delete();
+        safeDelete(asFile);
     }
 
 
