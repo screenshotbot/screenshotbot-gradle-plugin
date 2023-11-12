@@ -48,6 +48,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
     private void prepareRecordTask(Task task, TaskContainer tasks, Project project) {
         String backupSnapshots = task.getName() + "BackupSnapshots";
         String restoreSnapshots = task.getName() + "RestoreSnapshots";
+        String uploadSnapshots = task.getName() + "UploadSnapshots";
 
         task.mustRunAfter(backupSnapshots);
         tasks.register(task.getName() + "Screenshotbot",
@@ -60,6 +61,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                     });
                     it.dependsOn(task.getName());
                     it.dependsOn(backupSnapshots);
+                    it.dependsOn(uploadSnapshots);
                     it.dependsOn(restoreSnapshots);
 
                 });
@@ -69,9 +71,20 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
             });
         });
 
+        tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
+                        .configure((it) -> {
+                            it.directory = getSnapshotsDir(project).getAsFile();
+                            it.channel = project.getPath();
+
+                            it.mustRunAfter(task.getName());
+                            it.doFirst((innerTask) -> {
+
+                            });
+                        });
+
         tasks.register(restoreSnapshots)
                 .configure((it) -> {
-                    it.mustRunAfter(task.getName());
+                    it.mustRunAfter(uploadSnapshots);
                     it.doFirst((innerTask) -> {
                         restoreDir(getSnapshotsDir(project));
                     });
