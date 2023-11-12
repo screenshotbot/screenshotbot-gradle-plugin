@@ -9,10 +9,12 @@ import java.util.*;
 public class UploadScreenshotsTask extends DefaultTask {
     public File directory = null;
     public String channel = null;
+    public String mode = "record";
 
     @TaskAction
     public void uploadScreenshots() {
         ensureLibraryInstalled();
+        uploadChannel();
         System.out.println("Uploading: " + directory + " " + channel);
     }
 
@@ -24,6 +26,21 @@ public class UploadScreenshotsTask extends DefaultTask {
                 args.add("curl https://screenshotbot.io/recorder.sh | sh");
                 it.setArgs(args);
 
+            });
+    }
+
+    public void uploadChannel() {
+        getProject().exec((it) -> {
+                it.setExecutable(System.getenv("HOME") + "/screenshotbot/recorder");
+                ArrayList<String> args = new ArrayList<>();
+                args.add("dev");
+                args.add(mode);
+                args.add("--channel");
+                args.add(channel);
+                args.add("--directory");
+                args.add(directory.toString());
+
+                it.setArgs(args);
             });
     }
 
