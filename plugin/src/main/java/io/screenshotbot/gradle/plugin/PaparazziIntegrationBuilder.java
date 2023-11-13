@@ -26,7 +26,7 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
      */
     @NotNull
     @Override
-    protected File getImagesDirectory(Project project) {
+    public File getImagesDirectory(Project project) {
         return new File(getSnapshotsDir(project).getAsFile(), "images");
     }
 

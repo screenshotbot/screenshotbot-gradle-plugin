@@ -20,6 +20,6 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         target.getExtensions().create("screenshotbot", Extension.class);
 
         new PaparazziIntegrationBuilder().apply(target);
-
+        new FacebookIntegrationBuilder().apply(target);
     }
 }
