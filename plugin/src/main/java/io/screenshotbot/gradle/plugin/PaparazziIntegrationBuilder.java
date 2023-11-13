@@ -17,9 +17,9 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
                     tasks.stream().forEach((task) -> {
 
                         if (isApplicableTask(task)) {
-                            prepareTask(task, tasks, project, "record");
-                            prepareTask(task, tasks, project, "verify");
-                            prepareTask(task, tasks, project, "ci");
+                            prepareTask(task, project, "record");
+                            prepareTask(task, project, "verify");
+                            prepareTask(task, project, "ci");
                         }
 
                     });
@@ -40,7 +40,8 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
     }
 
 
-    private void prepareTask(Task task, TaskContainer tasks, Project project, String mode) {
+    private void prepareTask(Task task,  Project project, String mode) {
+        TaskContainer tasks = project.getTasks();
         String _taskName = task.getName();
         String nameWithoutPrefix = task.getName().substring("record".length());
         if (mode.equals("verify")) {
