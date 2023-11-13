@@ -15,6 +15,37 @@ But we eventually plan to support:
 * Dropshots
 * Roborazzi
 
+# Getting started
+
+Including the plugin is pretty straightforward. In your
+`build.gradle`, add the following lines
+
+```
+plugins {
+  id 'io.screenshotbot.plugin' version '1.1'
+}
+```
+
+If you use Paparazzi this will automatically create three new tasks
+for each of your Parazzi flavors, like so:
+
+```
+recordAndVerifyPaparazziDebugScreenshotbotCI
+recordPaparazziDebugScreenshotbot
+verifyPaparazziDebugScreenshotbot
+```
+
+The last two tasks are meant to be used by developers while working
+locally, and does not affect your CI state. You might have to run
+`~/screenshotbot/recorder dev install` and follow the instructions to
+install a key locally.
+
+The first task will be run in your CI, in place of simply `:verifyPaparazziDebug`.
+Screenshotbot does not require any screenshots to be stored in your repository,
+we'll run the record step and upload the screenshots to Screenshotbot, and also
+process information from you CI environment to figure out things like which Pull Request to
+send notifications on. On CI, you will have to set the `SCREENSHOTBOT_API_KEY` and `SCREENSHOTBOT_API_SECRET` environment variables.
+
 # License
 
 This library is licensed under the Mozilla Public License, v2.
