@@ -68,7 +68,7 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
 
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                 .configure((it) -> {
-                    it.directory = new File(getSnapshotsDir(project).getAsFile(), "images");
+                    it.directory = getImagesDirectory(project);
                     it.channel = project.getPath();
                     it.mode = mode;
 
@@ -87,13 +87,22 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
                 });
     }
 
+    /*
+     * This might be the same as getSnapshotsDir(), but for example with Paparazzi the 
+     * snapshots dir is the directory we're backing up, but the images directory is snapshots-dir/images. 
+     */
     @NotNull
-    private static String getPluginName() {
+    private File getImagesDirectory(Project project) {
+        return new File(getSnapshotsDir(project).getAsFile(), "images");
+    }
+
+    @NotNull
+    private String getPluginName() {
         return "Paparazzi";
     }
 
     @NotNull
-    private static String generateTaskName(Task task, String mode) {
+    private String generateTaskName(Task task, String mode) {
         String taskName = task.getName();
         String nameWithoutPrefix = task.getName().substring("record".length());
         if (mode.equals("verify")) {
