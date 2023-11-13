@@ -3,6 +3,7 @@ package io.screenshotbot.gradle.plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.file.Directory;
+import org.gradle.api.tasks.TaskContainer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -58,6 +59,53 @@ public abstract class AbstractIntegrationBuilder {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    protected void prepareTask(Task task, Project project, String mode) {
+        TaskContainer tasks = project.getTasks();
+
+        String taskName = generateTaskName(task, mode);
+        String backupSnapshots = taskName + "BackupSnapshots";
+        String restoreSnapshots = taskName + "RestoreSnapshots";
+        String uploadSnapshots = taskName + "UploadSnapshots";
+
+        task.mustRunAfter(backupSnapshots);
+        tasks.register(taskName,
+                        RecordPaparazziTask.class)
+                .configure((it) -> {
+                    it.setGroup("Screenshotbot");
+                    it.setDescription("Records " + getPluginName() + " screenshots into Screenshotbot");
+                    it.dependsOn(task.getName());
+                    it.dependsOn(backupSnapshots);
+                    it.dependsOn(uploadSnapshots);
+                    it.dependsOn(restoreSnapshots);
+
+                });
+        tasks.register(backupSnapshots).configure((it) -> {
+            it.doFirst((it2) -> {
+                backupDir(getSnapshotsDir(project));
+            });
+        });
+
+        tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
+                .configure((it) -> {
+                    it.directory = getImagesDirectory(project);
+                    it.channel = project.getPath();
+                    it.mode = mode;
+
+                    it.mustRunAfter(task.getName());
+                    it.doFirst((innerTask) -> {
+
+                    });
+                });
+
+        tasks.register(restoreSnapshots)
+                .configure((it) -> {
+                    it.mustRunAfter(uploadSnapshots);
+                    it.doFirst((innerTask) -> {
+                        restoreDir(getSnapshotsDir(project));
+                    });
+                });
     }
 
     /*
