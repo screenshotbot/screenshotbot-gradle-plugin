@@ -69,7 +69,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         tasks.register(taskName,
                         RecordPaparazziTask.class)
                 .configure((it) -> {
-                    it.setGroup(VERIFICATION_GROUP);
+                    it.setGroup("Screenshotbot");
                     it.setDescription("Records paparazzi screenshots into Screenshotbot");
                     it.dependsOn(task.getName());
                     it.dependsOn(backupSnapshots);
@@ -84,16 +84,16 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         });
 
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
-                        .configure((it) -> {
-                                it.directory = new File(getSnapshotsDir(project).getAsFile(), "images");
-                                it.channel = project.getPath();
-                                it.mode = mode;
+                .configure((it) -> {
+                    it.directory = new File(getSnapshotsDir(project).getAsFile(), "images");
+                    it.channel = project.getPath();
+                    it.mode = mode;
 
-                                it.mustRunAfter(task.getName());
-                                it.doFirst((innerTask) -> {
+                    it.mustRunAfter(task.getName());
+                    it.doFirst((innerTask) -> {
 
-                            });
-                        });
+                    });
+                });
 
         tasks.register(restoreSnapshots)
                 .configure((it) -> {
