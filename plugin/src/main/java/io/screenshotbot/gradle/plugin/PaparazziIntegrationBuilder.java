@@ -42,17 +42,8 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
 
     private void prepareTask(Task task,  Project project, String mode) {
         TaskContainer tasks = project.getTasks();
-        String _taskName = task.getName();
-        String nameWithoutPrefix = task.getName().substring("record".length());
-        if (mode.equals("verify")) {
-            _taskName = "verify" + nameWithoutPrefix + "Screenshotbot";
-        } else if (mode.equals("ci")) {
-            _taskName = "recordAndVerify" + nameWithoutPrefix + "ScreenshotbotCI";
-        } else {
-            _taskName += "Screenshotbot"; // For record
-        }
 
-        String taskName = _taskName;
+        String taskName = generateTaskName(task, mode);
         String backupSnapshots = taskName + "BackupSnapshots";
         String restoreSnapshots = taskName + "RestoreSnapshots";
         String uploadSnapshots = taskName + "UploadSnapshots";
@@ -94,6 +85,21 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
                         restoreDir(getSnapshotsDir(project));
                     });
                 });
+    }
+
+    @NotNull
+    private static String generateTaskName(Task task, String mode) {
+        String _taskName = task.getName();
+        String nameWithoutPrefix = task.getName().substring("record".length());
+        if (mode.equals("verify")) {
+            _taskName = "verify" + nameWithoutPrefix + "Screenshotbot";
+        } else if (mode.equals("ci")) {
+            _taskName = "recordAndVerify" + nameWithoutPrefix + "ScreenshotbotCI";
+        } else {
+            _taskName += "Screenshotbot"; // For record
+        }
+
+        return _taskName;
     }
 
 
