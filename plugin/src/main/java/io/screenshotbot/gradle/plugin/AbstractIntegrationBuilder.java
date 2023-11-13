@@ -54,8 +54,9 @@ public abstract class AbstractIntegrationBuilder {
         try {
             String dest = dir.getAsFile().toString() + "-screenshotbot-backup";
             // This isn't ideal.. but if the directory already exists, let's assume it was a previous backup, so we should restore it.
-            if (!new File(dest).exists()) {
-                Files.move(dir.getAsFile().toPath(),
+            if (!new File(dest).exists() && dir.getAsFile().exists()) {
+                Path src = dir.getAsFile().toPath();
+                Files.move(src,
                         Path.of(dest), ATOMIC_MOVE);
             }
         } catch (IOException e) {
@@ -142,7 +143,7 @@ public abstract class AbstractIntegrationBuilder {
      * snapshots dir is the directory we're backing up, but the images directory is snapshots-dir/images.
      */
     @NotNull
-    protected File getImagesDirectory(Project project) {
+    public File getImagesDirectory(Project project) {
         return getSnapshotsDir(project).getAsFile();
     }
 
