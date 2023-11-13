@@ -7,10 +7,10 @@ screenshot testing libraries with Screenshotbot.
 Currently we support:
 
 * Paparazzi
+* Facebook's screenshot-tests-for-android
 
 But we eventually plan to support:
 
-* screenshot-tests-for-android
 * Shot
 * Dropshots
 * Roborazzi
