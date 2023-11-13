@@ -30,7 +30,7 @@ gradlePlugin {
             displayName = 'Screenshotbot Gradle Plugin'
             website = "https://screenshotbot.io"
             vcsUrl = "https://github.com/screenshotbot/screenshotbot-gradle-plugin"
-            description = 'Automates most of the integration with Screenshotbot'
+            description = 'Automates most of the integration with Screenshotbot for popular Android screenshot testing libraries.'
             implementationClass = 'io.screenshotbot.gradle.plugin.ScreenshotbotPlugin'
             tags = ["screenshot-testing", "screenshotbot"]
         }
