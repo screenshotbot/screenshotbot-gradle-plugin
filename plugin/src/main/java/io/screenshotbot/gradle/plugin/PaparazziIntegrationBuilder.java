@@ -13,7 +13,7 @@ import java.nio.file.Path;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
-public class PaparazziIntegrationBuilder {
+public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
     public void apply(Project project) {
         Action<Plugin> action = new Action<Plugin>() {
             @Override
@@ -106,11 +106,6 @@ public class PaparazziIntegrationBuilder {
         }
     }
 
-    private void safeDelete(File file) {
-        if (!file.delete()) {
-            throw new RuntimeException("Could not delete: " + file);
-        }
-    }
     private void deleteDirectory(File asFile) {
         for (File file : asFile.listFiles()) {
             // I want to avoid having bugs here that accidently delete outside of this directory, and
