@@ -16,7 +16,7 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
                     TaskContainer tasks = project.getTasks();
                     tasks.stream().forEach((task) -> {
 
-                        if (task.getName().startsWith("recordPaparazzi")) {
+                        if (isApplicableTask(task)) {
                             prepareTask(task, tasks, project, "record");
                             prepareTask(task, tasks, project, "verify");
                             prepareTask(task, tasks, project, "ci");
@@ -26,8 +26,17 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
                 });
             }
         };
-        project.getPlugins().withId("app.cash.paparazzi", action);
+        project.getPlugins().withId(getPluginId(), action);
 
+    }
+
+    @NotNull
+    private String getPluginId() {
+        return "app.cash.paparazzi";
+    }
+
+    private boolean isApplicableTask(Task task) {
+        return task.getName().startsWith("recordPaparazzi");
     }
 
 
