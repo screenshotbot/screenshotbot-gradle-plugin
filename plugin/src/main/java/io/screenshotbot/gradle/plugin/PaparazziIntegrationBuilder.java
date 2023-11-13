@@ -98,7 +98,7 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
 
 
     @NotNull
-    private static Directory getSnapshotsDir(Project project) {
+    private Directory getSnapshotsDir(Project project) {
         return project.getLayout().getProjectDirectory().dir("src/test/snapshots");
     }
 
