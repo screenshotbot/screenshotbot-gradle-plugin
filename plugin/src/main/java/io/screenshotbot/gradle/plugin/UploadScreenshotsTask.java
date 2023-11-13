@@ -33,8 +33,11 @@ public class UploadScreenshotsTask extends DefaultTask {
         getProject().exec((it) -> {
                 it.setExecutable(System.getenv("HOME") + "/screenshotbot/recorder");
                 ArrayList<String> args = new ArrayList<>();
-                args.add("dev");
-                args.add(mode);
+                if (!mode.equals("ci")) {
+                    args.add("dev");
+                    args.add(mode);
+                }
+
                 args.add("--channel");
                 args.add(channel);
                 args.add("--directory");

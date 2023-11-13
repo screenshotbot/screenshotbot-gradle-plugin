@@ -36,7 +36,9 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
                         if (task.getName().startsWith("recordPaparazzi")) {
                             prepareTask(task, tasks, project, "record");
-                            prepareTask(task, tasks, project, "verify");                                             }
+                            prepareTask(task, tasks, project, "verify");
+                            prepareTask(task, tasks, project, "ci");
+                        }
 
                     });
                 });
@@ -49,8 +51,13 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
     private void prepareTask(Task task, TaskContainer tasks, Project project, String mode) {
         String _taskName = task.getName();
+        String nameWithoutPrefix = task.getName().substring("record".length());
         if (mode.equals("verify")) {
-            _taskName = "verify" + task.getName().substring("record".length());
+            _taskName = "verify" + nameWithoutPrefix + "Screenshotbot";
+        } else if (mode.equals("ci")) {
+            _taskName = "recordAndVerify" + nameWithoutPrefix + "ScreenshotbotCI";
+        } else {
+            _taskName += "Screenshotbot"; // For record
         }
 
         String taskName = _taskName;
@@ -59,7 +66,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         String uploadSnapshots = taskName + "UploadSnapshots";
 
         task.mustRunAfter(backupSnapshots);
-        tasks.register(taskName + "Screenshotbot",
+        tasks.register(taskName,
                         RecordPaparazziTask.class)
                 .configure((it) -> {
                     it.setGroup(VERIFICATION_GROUP);
