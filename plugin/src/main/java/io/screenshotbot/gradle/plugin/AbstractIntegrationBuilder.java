@@ -142,7 +142,9 @@ public abstract class AbstractIntegrationBuilder {
      * snapshots dir is the directory we're backing up, but the images directory is snapshots-dir/images.
      */
     @NotNull
-    protected abstract File getImagesDirectory(Project project);
+    protected File getImagesDirectory(Project project) {
+        return getSnapshotsDir(project).getAsFile();
+    }
 
     @NotNull
     protected abstract String getPluginName();
