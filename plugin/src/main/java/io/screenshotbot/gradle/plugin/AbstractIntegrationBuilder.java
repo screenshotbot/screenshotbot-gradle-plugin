@@ -1,6 +1,9 @@
 package io.screenshotbot.gradle.plugin;
 
+import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.file.Directory;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +12,7 @@ import java.nio.file.Path;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
-public class AbstractIntegrationBuilder {
+public abstract class AbstractIntegrationBuilder {
     protected void safeDelete(File file) {
         if (!file.delete()) {
             throw new RuntimeException("Could not delete: " + file);
@@ -56,4 +59,20 @@ public class AbstractIntegrationBuilder {
             throw new RuntimeException(e);
         }
     }
+
+    /*
+     * This might be the same as getSnapshotsDir(), but for example with Paparazzi the
+     * snapshots dir is the directory we're backing up, but the images directory is snapshots-dir/images.
+     */
+    @NotNull
+    protected abstract File getImagesDirectory(Project project);
+
+    @NotNull
+    protected abstract String getPluginName();
+
+    @NotNull
+    protected abstract String generateTaskName(Task task, String mode);
+
+    @NotNull
+    protected abstract Directory getSnapshotsDir(Project project);
 }

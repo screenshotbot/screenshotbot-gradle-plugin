@@ -92,17 +92,20 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
      * snapshots dir is the directory we're backing up, but the images directory is snapshots-dir/images. 
      */
     @NotNull
-    private File getImagesDirectory(Project project) {
+    @Override
+    protected File getImagesDirectory(Project project) {
         return new File(getSnapshotsDir(project).getAsFile(), "images");
     }
 
     @NotNull
-    private String getPluginName() {
+    @Override
+    protected String getPluginName() {
         return "Paparazzi";
     }
 
     @NotNull
-    private String generateTaskName(Task task, String mode) {
+    @Override
+    protected String generateTaskName(Task task, String mode) {
         String taskName = task.getName();
         String nameWithoutPrefix = task.getName().substring("record".length());
         if (mode.equals("verify")) {
@@ -118,7 +121,8 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
 
 
     @NotNull
-    private Directory getSnapshotsDir(Project project) {
+    @Override
+    protected Directory getSnapshotsDir(Project project) {
         return project.getLayout().getProjectDirectory().dir("src/test/snapshots");
     }
 
