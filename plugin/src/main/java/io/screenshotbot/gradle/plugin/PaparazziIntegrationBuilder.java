@@ -2,40 +2,20 @@ package io.screenshotbot.gradle.plugin;
 
 import org.gradle.api.*;
 import org.gradle.api.file.Directory;
-import org.gradle.api.tasks.TaskContainer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
-    public void apply(Project project) {
-        Action<Plugin> action = new Action<Plugin>() {
-            @Override
-            public void execute(Plugin plugin) {
-                project.afterEvaluate((project) -> {
-                    TaskContainer tasks = project.getTasks();
-                    tasks.stream().forEach((task) -> {
-
-                        if (isApplicableTask(task)) {
-                            prepareTask(task, project, "record");
-                            prepareTask(task, project, "verify");
-                            prepareTask(task, project, "ci");
-                        }
-
-                    });
-                });
-            }
-        };
-        project.getPlugins().withId(getPluginId(), action);
-
-    }
 
     @NotNull
-    private String getPluginId() {
+    @Override
+    protected String getPluginId() {
         return "app.cash.paparazzi";
     }
 
-    private boolean isApplicableTask(Task task) {
+    @Override
+    protected boolean isApplicableTask(Task task) {
         return task.getName().startsWith("recordPaparazzi");
     }
 

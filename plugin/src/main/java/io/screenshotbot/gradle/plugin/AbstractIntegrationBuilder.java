@@ -1,5 +1,7 @@
 package io.screenshotbot.gradle.plugin;
 
+import org.gradle.api.Action;
+import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.file.Directory;
@@ -107,6 +109,33 @@ public abstract class AbstractIntegrationBuilder {
                     });
                 });
     }
+
+    public void apply(Project project) {
+        Action<Plugin> action = new Action<Plugin>() {
+            @Override
+            public void execute(Plugin plugin) {
+                project.afterEvaluate((project) -> {
+                    TaskContainer tasks = project.getTasks();
+                    tasks.stream().forEach((task) -> {
+
+                        if (isApplicableTask(task)) {
+                            prepareTask(task, project, "record");
+                            prepareTask(task, project, "verify");
+                            prepareTask(task, project, "ci");
+                        }
+
+                    });
+                });
+            }
+        };
+        project.getPlugins().withId(getPluginId(), action);
+
+    }
+
+    @NotNull
+    protected abstract String getPluginId();
+
+    protected abstract boolean isApplicableTask(Task task);
 
     /*
      * This might be the same as getSnapshotsDir(), but for example with Paparazzi the
