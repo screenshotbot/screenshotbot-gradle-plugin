@@ -38,10 +38,7 @@ public abstract class AbstractIntegrationBuilder {
 
     private void deleteDirectory(File asFile) {
         for (File file : asFile.listFiles()) {
-            // I want to avoid having bugs here that accidently delete outside of this directory, and
-            // I don't want dependencies, so I'll hardcode some of the directories I'm allowed to recurse
-            // into
-            if (file.isDirectory() && file.getName().equals("images")) {
+            if (file.isDirectory() && !Files.isSymbolicLink(file.toPath())) {
                 deleteDirectory(file);
             } else {
                 safeDelete(file);
