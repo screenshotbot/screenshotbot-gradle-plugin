@@ -53,7 +53,7 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
                         RecordPaparazziTask.class)
                 .configure((it) -> {
                     it.setGroup("Screenshotbot");
-                    it.setDescription("Records paparazzi screenshots into Screenshotbot");
+                    it.setDescription("Records " + getPluginName() + " screenshots into Screenshotbot");
                     it.dependsOn(task.getName());
                     it.dependsOn(backupSnapshots);
                     it.dependsOn(uploadSnapshots);
@@ -88,18 +88,23 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
     }
 
     @NotNull
+    private static String getPluginName() {
+        return "Paparazzi";
+    }
+
+    @NotNull
     private static String generateTaskName(Task task, String mode) {
-        String _taskName = task.getName();
+        String taskName = task.getName();
         String nameWithoutPrefix = task.getName().substring("record".length());
         if (mode.equals("verify")) {
-            _taskName = "verify" + nameWithoutPrefix + "Screenshotbot";
+            taskName = "verify" + nameWithoutPrefix + "Screenshotbot";
         } else if (mode.equals("ci")) {
-            _taskName = "recordAndVerify" + nameWithoutPrefix + "ScreenshotbotCI";
+            taskName = "recordAndVerify" + nameWithoutPrefix + "ScreenshotbotCI";
         } else {
-            _taskName += "Screenshotbot"; // For record
+            taskName += "Screenshotbot"; // For record
         }
 
-        return _taskName;
+        return taskName;
     }
 
 
