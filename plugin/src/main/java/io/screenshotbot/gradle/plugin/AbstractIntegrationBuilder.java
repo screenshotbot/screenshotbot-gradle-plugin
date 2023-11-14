@@ -1,5 +1,6 @@
 package io.screenshotbot.gradle.plugin;
 
+import org.apache.tools.ant.util.ResourceUtils;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -142,6 +143,7 @@ public abstract class AbstractIntegrationBuilder {
                 });
             }
         };
+
         project.getPlugins().withId(getPluginId(), action);
 
     }
