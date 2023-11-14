@@ -30,8 +30,8 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
      */
     @NotNull
     @Override
-    public File getImagesDirectory(Project project) {
-        return new File(getSnapshotsDir(project).getAsFile(), "images");
+    public File getImagesDirectory(Project project, Task task) {
+        return new File(getSnapshotsDir(project, task).getAsFile(), "images");
     }
 
     @NotNull
@@ -59,7 +59,7 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
 
     @NotNull
     @Override
-    protected Directory getSnapshotsDir(Project project) {
+    protected Directory getSnapshotsDir(Project project, Task task) {
         return project.getLayout().getProjectDirectory().dir("src/test/snapshots");
     }
 
