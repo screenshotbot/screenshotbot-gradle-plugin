@@ -86,16 +86,19 @@ public abstract class AbstractIntegrationBuilder {
                     it.dependsOn(uploadSnapshots);
                     it.dependsOn(restoreSnapshots);
 
+                    configureTaskDependencies(it, task);
+
                 });
         tasks.register(backupSnapshots).configure((it) -> {
+            configureBackupSnapshotsDependencies(it, task);
             it.doFirst((it2) -> {
-                backupDir(getSnapshotsDir(project));
+                backupDir(getSnapshotsDir(project, task));
             });
         });
 
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                 .configure((it) -> {
-                    it.directory = getImagesDirectory(project);
+                    it.directory = getImagesDirectory(project, task);
                     it.channel = project.getPath();
                     it.mode = mode;
                     it.hostname = extension.getHostname();
@@ -110,9 +113,15 @@ public abstract class AbstractIntegrationBuilder {
                 .configure((it) -> {
                     it.mustRunAfter(uploadSnapshots);
                     it.doFirst((innerTask) -> {
-                        restoreDir(getSnapshotsDir(project));
+                        restoreDir(getSnapshotsDir(project, task));
                     });
                 });
+    }
+
+    protected void configureBackupSnapshotsDependencies(Task it, Task task) {
+    }
+
+    protected void configureTaskDependencies(RecordPaparazziTask it, Task sourceTask) {
     }
 
     public void apply(Project project) {
@@ -147,8 +156,8 @@ public abstract class AbstractIntegrationBuilder {
      * snapshots dir is the directory we're backing up, but the images directory is snapshots-dir/images.
      */
     @NotNull
-    public File getImagesDirectory(Project project) {
-        return getSnapshotsDir(project).getAsFile();
+    public File getImagesDirectory(Project project, Task task) {
+        return getSnapshotsDir(project, task).getAsFile();
     }
 
     @NotNull
@@ -158,5 +167,13 @@ public abstract class AbstractIntegrationBuilder {
     protected abstract String generateTaskName(Task task, String mode);
 
     @NotNull
-    protected abstract Directory getSnapshotsDir(Project project);
+    protected abstract Directory getSnapshotsDir(Project project, Task task);
+
+    public String upcaseFirst(String str) {
+        if (str.equals("")) {
+            return str;
+        } else {
+            return str.substring(0,1).toUpperCase() + str.substring(1);
+        }
+    }
 }

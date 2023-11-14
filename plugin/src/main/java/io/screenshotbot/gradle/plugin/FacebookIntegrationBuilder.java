@@ -51,7 +51,7 @@ public class FacebookIntegrationBuilder extends AbstractIntegrationBuilder {
     }
 
     @Override
-    protected @NotNull Directory getSnapshotsDir(Project project) {
+    protected @NotNull Directory getSnapshotsDir(Project project, Task task) {
         Object ext = project.getExtensions().findByName("screenshots");
         assert(ext != null);
         String recordDir = null;
@@ -69,8 +69,8 @@ public class FacebookIntegrationBuilder extends AbstractIntegrationBuilder {
         return project.getLayout().getProjectDirectory().dir(recordDir);
     }
 
-    public File getImagesDirectory(Project project) {
-        Directory dir = getSnapshotsDir(project);
+    public File getImagesDirectory(Project project, Task task) {
+        Directory dir = getSnapshotsDir(project, task);
         for (File file : dir.getAsFile().listFiles()) {
             if (file.isDirectory()) {
                 return file;
