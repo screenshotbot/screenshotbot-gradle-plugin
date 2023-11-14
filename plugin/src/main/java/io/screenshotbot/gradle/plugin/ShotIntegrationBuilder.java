@@ -9,6 +9,10 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
 
     public static final String SUFFIX = "ExecuteScreenshotTests";
 
+    public ShotIntegrationBuilder(ScreenshotbotPlugin.Extension extension) {
+        super(extension);
+    }
+
     @Override
     protected @NotNull String getPluginId() {
         return "shot";
