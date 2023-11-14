@@ -17,9 +17,9 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
     }
     @Override
     public void apply(Project target) {
-        target.getExtensions().create("screenshotbot", Extension.class);
+        Extension extension = target.getExtensions().create("screenshotbot", Extension.class);
 
-        new PaparazziIntegrationBuilder().apply(target);
-        new FacebookIntegrationBuilder().apply(target);
+        new PaparazziIntegrationBuilder(extension).apply(target);
+        new FacebookIntegrationBuilder(extension).apply(target);
     }
 }

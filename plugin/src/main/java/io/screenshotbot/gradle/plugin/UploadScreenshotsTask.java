@@ -10,6 +10,7 @@ public class UploadScreenshotsTask extends DefaultTask {
     public File directory = null;
     public String channel = null;
     public String mode = "record";
+    public String hostname = null;
 
     @TaskAction
     public void uploadScreenshots() {
@@ -33,6 +34,11 @@ public class UploadScreenshotsTask extends DefaultTask {
         getProject().exec((it) -> {
                 it.setExecutable(System.getenv("HOME") + "/screenshotbot/recorder");
                 ArrayList<String> args = new ArrayList<>();
+
+                assert (hostname != null);
+                args.add("--api-hostname");
+                args.add(hostname);
+
                 if (!mode.equals("ci")) {
                     args.add("dev");
                     args.add(mode);

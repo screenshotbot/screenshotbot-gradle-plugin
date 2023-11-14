@@ -13,6 +13,10 @@ public class FacebookIntegrationBuilder extends AbstractIntegrationBuilder {
     public static final String SUFFIX = "AndroidTestScreenshotTest";
     public static final String PREFIX = "record";
 
+    public FacebookIntegrationBuilder(ScreenshotbotPlugin.Extension extension) {
+        super(extension);
+    }
+
     @Override
     protected @NotNull String getPluginId() {
         return "com.facebook.testing.screenshot";
