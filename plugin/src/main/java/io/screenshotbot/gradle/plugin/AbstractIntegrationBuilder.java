@@ -86,6 +86,8 @@ public abstract class AbstractIntegrationBuilder {
                     it.dependsOn(uploadSnapshots);
                     it.dependsOn(restoreSnapshots);
 
+                    configureTaskDependencies(it, task);
+
                 });
         tasks.register(backupSnapshots).configure((it) -> {
             it.doFirst((it2) -> {
@@ -113,6 +115,9 @@ public abstract class AbstractIntegrationBuilder {
                         restoreDir(getSnapshotsDir(project, task));
                     });
                 });
+    }
+
+    protected void configureTaskDependencies(RecordPaparazziTask it, Task sourceTask) {
     }
 
     public void apply(Project project) {

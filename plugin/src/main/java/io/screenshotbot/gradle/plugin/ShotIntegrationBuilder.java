@@ -14,6 +14,16 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
     public ShotIntegrationBuilder(ScreenshotbotPlugin.Extension extension) {
         super(extension);
     }
+    
+    @Override
+    protected void configureTaskDependencies(RecordPaparazziTask it, Task sourceTask) {
+        String executeTask = getFlavor(sourceTask) + "ExecuteScreenshotTests";
+        it.dependsOn(executeTask);
+    }
+
+    private String getInstrumentationTaskName(String flavor) {
+        return "connected" + upcaseFirst(flavor) + "AndroidTest";
+    }
 
     @Override
     protected @NotNull String getPluginId() {
