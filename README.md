@@ -36,15 +36,16 @@ verifyPaparazziDebugScreenshotbot
 ```
 
 The last two tasks are meant to be used by developers while working
-locally, and does not affect your CI state. You might have to run
-`~/screenshotbot/recorder dev install` and follow the instructions to
-install a key locally.
+locally, and does not affect your CI state. You will have to run
+`./gradlew :installScreenshotbot` and follow the instructions to
+install a key locally. Once installed, we'll use the keys in future runs.
 
 The first task will be run in your CI, in place of simply `:verifyPaparazziDebug`.
 Screenshotbot does not require any screenshots to be stored in your repository,
 we'll run the record step and upload the screenshots to Screenshotbot, and also
 process information from you CI environment to figure out things like which Pull Request to
 send notifications on. On CI, you will have to set the `SCREENSHOTBOT_API_KEY` and `SCREENSHOTBOT_API_SECRET` environment variables.
+
 
 # Configure Enterprise or OSS Installations
 
