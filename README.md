@@ -46,6 +46,26 @@ we'll run the record step and upload the screenshots to Screenshotbot, and also
 process information from you CI environment to figure out things like which Pull Request to
 send notifications on. On CI, you will have to set the `SCREENSHOTBOT_API_KEY` and `SCREENSHOTBOT_API_SECRET` environment variables.
 
+# Configure Enterprise or OSS Installations
+
+By default, the plugin assumes you are using the installation at https://screenshotbot.io.
+
+If you are Enterprise customer, we give you a custom installation that looks like `https://<customer>.screenshotbot.io`. Similarly, you might have your own domain for OSS users.
+
+In this case, you might want to set the default domain across all subprojects in your root
+`build.gradle`
+
+```groovy
+subprojects {
+    plugins.withId('io.screenshotbot.plugin') {
+        screenshotbot {
+            hostname "https://staging.screenshotbot.io"
+        }
+    }
+}
+
+```
+
 # License
 
 This library is licensed under the Mozilla Public License, v2.
