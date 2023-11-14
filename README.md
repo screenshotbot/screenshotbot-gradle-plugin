@@ -60,7 +60,7 @@ In this case, you might want to set the default domain across all subprojects in
 subprojects {
     plugins.withId('io.screenshotbot.plugin') {
         screenshotbot {
-            hostname "https://staging.screenshotbot.io"
+            hostname "https://customer.screenshotbot.io"
         }
     }
 }
