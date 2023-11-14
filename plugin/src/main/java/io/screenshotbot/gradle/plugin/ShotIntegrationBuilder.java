@@ -5,9 +5,11 @@ import org.gradle.api.Task;
 import org.gradle.api.file.Directory;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+
 public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
 
-    public static final String SUFFIX = "ExecuteScreenshotTests";
+    public static final String SUFFIX = "DownloadScreenshots";
 
     public ShotIntegrationBuilder(ScreenshotbotPlugin.Extension extension) {
         super(extension);
@@ -38,6 +40,10 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
         }
     }
 
+    @Override
+    public File getImagesDirectory(Project project, Task task) {
+        return getSnapshotsDir(project, task).dir("screenshots-default").getAsFile();
+    }
 
     @Override
     protected @NotNull Directory getSnapshotsDir(Project project, Task task) {
