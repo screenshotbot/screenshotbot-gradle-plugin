@@ -16,6 +16,12 @@ import java.nio.file.Path;
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
 public abstract class AbstractIntegrationBuilder {
+    private final ScreenshotbotPlugin.Extension extension;
+
+    public AbstractIntegrationBuilder(ScreenshotbotPlugin.Extension extension) {
+        this.extension = extension;
+    }
+
     protected void safeDelete(File file) {
         if (!file.delete()) {
             throw new RuntimeException("Could not delete: " + file);
@@ -92,6 +98,7 @@ public abstract class AbstractIntegrationBuilder {
                     it.directory = getImagesDirectory(project);
                     it.channel = project.getPath();
                     it.mode = mode;
+                    it.hostname = extension.hostname;
 
                     it.mustRunAfter(task.getName());
                     it.doFirst((innerTask) -> {

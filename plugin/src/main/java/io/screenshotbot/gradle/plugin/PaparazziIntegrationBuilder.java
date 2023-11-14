@@ -8,6 +8,10 @@ import java.io.File;
 
 public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
 
+    public PaparazziIntegrationBuilder(ScreenshotbotPlugin.Extension extension) {
+        super(extension);
+    }
+
     @NotNull
     @Override
     protected String getPluginId() {
