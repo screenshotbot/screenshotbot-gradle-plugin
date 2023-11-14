@@ -8,10 +8,10 @@ Currently we support:
 
 * Paparazzi
 * Facebook's screenshot-tests-for-android
+* Shot
 
 But we eventually plan to support:
 
-* Shot
 * Dropshots
 * Roborazzi
 
