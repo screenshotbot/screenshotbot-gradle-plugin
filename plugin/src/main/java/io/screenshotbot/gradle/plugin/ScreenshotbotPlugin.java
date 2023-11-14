@@ -22,6 +22,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         new FacebookIntegrationBuilder(extension).apply(target);
         new ShotIntegrationBuilder(extension).apply(target);
         new RoborazziIntegrationBuilder(extension).apply(target);
+        new DropshotsIntegrationBuilder(extension).apply(target);
 
         target.getTasks().register("installScreenshotbot", InstallScreenshotbotTask.class)
                 .configure((it) -> {
