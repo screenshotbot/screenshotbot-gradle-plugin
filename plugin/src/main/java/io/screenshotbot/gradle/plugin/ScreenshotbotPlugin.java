@@ -21,5 +21,11 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
         new PaparazziIntegrationBuilder(extension).apply(target);
         new FacebookIntegrationBuilder(extension).apply(target);
+
+        target.getTasks().register("installScreenshotbot", InstallScreenshotbotTask.class)
+                .configure((it) -> {
+                   it.setGroup("Screenshotbot");
+                   it.hostname = extension.hostname;
+                });
     }
 }
