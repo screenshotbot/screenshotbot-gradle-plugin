@@ -1,19 +1,18 @@
 package io.screenshotbot.gradle.plugin;
 
-import groovy.lang.Closure;
 import org.gradle.api.*;
-import org.gradle.api.file.Directory;
-import org.gradle.api.tasks.TaskContainer;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class ScreenshotbotPlugin implements Plugin<Project> {
     public static class Extension {
-        String hostname = "https://api.screenshotbot.io";
+        private String hostname = "https://api.screenshotbot.io";
+
+        public String getHostname() {
+            return hostname;
+        }
+
+        public void setHostname(String hostname) {
+            this.hostname = hostname;
+        }
     }
     @Override
     public void apply(Project target) {
@@ -25,7 +24,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         target.getTasks().register("installScreenshotbot", InstallScreenshotbotTask.class)
                 .configure((it) -> {
                    it.setGroup("Screenshotbot");
-                   it.hostname = extension.hostname;
+                   it.hostname = extension.getHostname();
                 });
     }
 }

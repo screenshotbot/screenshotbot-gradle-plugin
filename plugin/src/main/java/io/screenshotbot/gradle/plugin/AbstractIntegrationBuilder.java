@@ -98,7 +98,7 @@ public abstract class AbstractIntegrationBuilder {
                     it.directory = getImagesDirectory(project);
                     it.channel = project.getPath();
                     it.mode = mode;
-                    it.hostname = extension.hostname;
+                    it.hostname = extension.getHostname();
 
                     it.mustRunAfter(task.getName());
                     it.doFirst((innerTask) -> {
