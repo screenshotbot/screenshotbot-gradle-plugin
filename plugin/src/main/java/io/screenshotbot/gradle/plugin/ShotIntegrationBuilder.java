@@ -14,11 +14,18 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
     public ShotIntegrationBuilder(ScreenshotbotPlugin.Extension extension) {
         super(extension);
     }
-    
+
+    @Override
+    protected void configureBackupSnapshotsDependencies(Task it, Task task) {
+        it.mustRunAfter(getInstrumentationTaskName(getFlavor(task)));
+    }
+
+
     @Override
     protected void configureTaskDependencies(RecordPaparazziTask it, Task sourceTask) {
-        String executeTask = getFlavor(sourceTask) + "ExecuteScreenshotTests";
+        String executeTask = getInstrumentationTaskName(getFlavor(sourceTask));
         it.dependsOn(executeTask);
+
     }
 
     private String getInstrumentationTaskName(String flavor) {
