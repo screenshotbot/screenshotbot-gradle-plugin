@@ -9,11 +9,11 @@ Currently we support:
 * Paparazzi
 * Facebook's screenshot-tests-for-android
 * Shot
+* Roborazzi
 
 But we eventually plan to support:
 
 * Dropshots
-* Roborazzi
 
 # Getting started
 
@@ -22,7 +22,7 @@ Including the plugin is pretty straightforward. In your
 
 ```
 plugins {
-  id 'io.screenshotbot.plugin' version '1.3'
+  id 'io.screenshotbot.plugin' version '1.5'
 }
 ```
 
