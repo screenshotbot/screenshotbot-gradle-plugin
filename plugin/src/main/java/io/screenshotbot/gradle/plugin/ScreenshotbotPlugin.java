@@ -25,6 +25,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         target.getTasks().register("installScreenshotbot", InstallScreenshotbotTask.class)
                 .configure((it) -> {
                    it.setGroup("Screenshotbot");
+                   it.setDescription("Install Screenshotbot credentials interactively");
                    it.hostname = extension.getHostname();
                 });
     }
