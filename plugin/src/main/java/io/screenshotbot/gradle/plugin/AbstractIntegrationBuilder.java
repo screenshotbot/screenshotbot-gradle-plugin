@@ -89,7 +89,7 @@ public abstract class AbstractIntegrationBuilder {
                     it.dependsOn(uploadSnapshots);
                     it.dependsOn(restoreSnapshots);
 
-                    configureTaskDependencies(it, task);
+                    configureTaskDependencies(it, inputTaskName);
 
                 });
         tasks.register(backupSnapshots).configure((it) -> {
@@ -126,7 +126,7 @@ public abstract class AbstractIntegrationBuilder {
     protected void configureBackupSnapshotsDependencies(Task it, Task task) {
     }
 
-    protected void configureTaskDependencies(RecordPaparazziTask it, Task sourceTask) {
+    protected void configureTaskDependencies(RecordPaparazziTask it, String sourceTask) {
     }
 
     public void apply(Project project) {

@@ -22,8 +22,8 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
 
 
     @Override
-    protected void configureTaskDependencies(RecordPaparazziTask it, Task sourceTask) {
-        String executeTask = getInstrumentationTaskName(getFlavor(sourceTask));
+    protected void configureTaskDependencies(RecordPaparazziTask it, String sourceTask) {
+        String executeTask = getInstrumentationTaskName(getFlavorFromTaskName(sourceTask));
         it.dependsOn(executeTask);
 
     }
@@ -71,6 +71,12 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
 
     @NotNull
     private static String getFlavor(Task task) {
-        return task.getName().substring(0, task.getName().length() - SUFFIX.length());
+        String taskName = task.getName();
+        return getFlavorFromTaskName(taskName);
+    }
+
+    @NotNull
+    private static String getFlavorFromTaskName(String taskName) {
+        return taskName.substring(0, taskName.length() - SUFFIX.length());
     }
 }
