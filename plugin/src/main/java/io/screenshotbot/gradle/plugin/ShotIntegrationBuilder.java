@@ -16,8 +16,8 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
     }
 
     @Override
-    protected void configureBackupSnapshotsDependencies(Task it, Task task) {
-        it.mustRunAfter(getInstrumentationTaskName(getFlavor(task)));
+    protected void configureBackupSnapshotsDependencies(Task it, String taskName) {
+        it.mustRunAfter(getInstrumentationTaskName(getFlavorFromTaskName(taskName)));
     }
 
 

@@ -93,7 +93,7 @@ public abstract class AbstractIntegrationBuilder {
 
                 });
         tasks.register(backupSnapshots).configure((it) -> {
-            configureBackupSnapshotsDependencies(it, task);
+            configureBackupSnapshotsDependencies(it, inputTaskName);
             it.doFirst((it2) -> {
                 backupDir(snapshotsDir);
             });
@@ -123,7 +123,7 @@ public abstract class AbstractIntegrationBuilder {
                 });
     }
 
-    protected void configureBackupSnapshotsDependencies(Task it, Task task) {
+    protected void configureBackupSnapshotsDependencies(Task it, String taskName) {
     }
 
     protected void configureTaskDependencies(RecordPaparazziTask it, String sourceTask) {
