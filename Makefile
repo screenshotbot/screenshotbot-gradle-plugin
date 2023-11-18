@@ -11,6 +11,7 @@ paparazzi-integration:
 
 	$(MAKE) update-maven-local
 	cd $(OTHER) && ./gradlew :sample:recordPaparazziDebugScreenshotbot
+	cd $(OTHER) && ./gradlew :sample:verifyPaparazziDebugScreenshotbot
 
 
 update-maven-local:
