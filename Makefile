@@ -16,6 +16,16 @@ paparazzi-integration:
 	cd $(OTHER) && ./gradlew :sample:recordPaparazziDebugScreenshotbot
 	cd $(OTHER) && ./gradlew :sample:verifyPaparazziDebugScreenshotbot
 
+roborazzi-integration:
+	rm -rf $(OTHER)
+	git clone ssh://git@phabricator.tdrhq.com:2222/diffusion/24/roborazzi.git $(OTHER)
+
+	$(MAKE) update-other-repo
+
+
+	cd $(OTHER) && ./gradlew :sample-android:recordRoborazziDebugScreenshotbot
+	cd $(OTHER) && ./gradlew :sample-android:verifyRoborazziDebugScreenshotbot
+
 fix-version:
 	cd $(OTHER) && sed -i "s/id 'io.screenshotbot.plugin' version '.*'/id 'io.screenshotbot.plugin' version '$(VERSION)'/" build.gradle */build.gradle
 
