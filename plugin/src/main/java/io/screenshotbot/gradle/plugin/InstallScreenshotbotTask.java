@@ -12,8 +12,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
+import org.gradle.process.*;
 
 public class InstallScreenshotbotTask extends BaseRecorderTask {
+    @Inject
+    public InstallScreenshotbotTask(ExecOperations execOperations) {
+        super(execOperations);
+    }
+
     @TaskAction
     public void installScreenshotbot() {
         ensureLibraryInstalled();
@@ -30,7 +37,7 @@ public class InstallScreenshotbotTask extends BaseRecorderTask {
         args.add("--token");
         args.add(token);
 
-        getProject().exec((it) -> {
+        execOperations.exec((it) -> {
             it.setCommandLine(args);
         });
     }

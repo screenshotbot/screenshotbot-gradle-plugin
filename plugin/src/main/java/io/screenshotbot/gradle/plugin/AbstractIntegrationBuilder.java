@@ -75,6 +75,11 @@ public abstract class AbstractIntegrationBuilder {
         String backupSnapshots = taskName + "BackupSnapshots";
         String restoreSnapshots = taskName + "RestoreSnapshots";
         String uploadSnapshots = taskName + "UploadSnapshots";
+        Directory snapshotsDir = getSnapshotsDir(project, task);
+
+        String inputTaskName = task.getName();
+        String channelName = project.getPath();
+        File imagesDirectory = getImagesDirectory(project, task);
 
         task.mustRunAfter(backupSnapshots);
         tasks.register(taskName,
@@ -82,29 +87,30 @@ public abstract class AbstractIntegrationBuilder {
                 .configure((it) -> {
                     it.setGroup("Screenshotbot");
                     it.setDescription("Records " + getPluginName() + " screenshots into Screenshotbot");
-                    it.dependsOn(task.getName());
+                    it.dependsOn(inputTaskName);
                     it.dependsOn(backupSnapshots);
                     it.dependsOn(uploadSnapshots);
                     it.dependsOn(restoreSnapshots);
 
-                    configureTaskDependencies(it, task);
+                    configureTaskDependencies(it, inputTaskName);
 
                 });
         tasks.register(backupSnapshots).configure((it) -> {
-            configureBackupSnapshotsDependencies(it, task);
+            configureBackupSnapshotsDependencies(it, inputTaskName);
             it.doFirst((it2) -> {
-                backupDir(getSnapshotsDir(project, task));
+                backupDir(snapshotsDir);
             });
         });
 
+
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                 .configure((it) -> {
-                    it.directory = getImagesDirectory(project, task);
-                    it.channel = project.getPath();
+                    it.directory = imagesDirectory;
+                    it.channel = channelName;
                     it.mode = mode;
                     it.hostname = extension.getHostname();
 
-                    it.mustRunAfter(task.getName());
+                    it.mustRunAfter(inputTaskName);
                     it.doFirst((innerTask) -> {
 
                     });
@@ -114,15 +120,15 @@ public abstract class AbstractIntegrationBuilder {
                 .configure((it) -> {
                     it.mustRunAfter(uploadSnapshots);
                     it.doFirst((innerTask) -> {
-                        restoreDir(getSnapshotsDir(project, task));
+                        restoreDir(snapshotsDir);
                     });
                 });
     }
 
-    protected void configureBackupSnapshotsDependencies(Task it, Task task) {
+    protected void configureBackupSnapshotsDependencies(Task it, String taskName) {
     }
 
-    protected void configureTaskDependencies(RecordPaparazziTask it, Task sourceTask) {
+    protected void configureTaskDependencies(RecordPaparazziTask it, String sourceTask) {
     }
 
     public void apply(Project project) {

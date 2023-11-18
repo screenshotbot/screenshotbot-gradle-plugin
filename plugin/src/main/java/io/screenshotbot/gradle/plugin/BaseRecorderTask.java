@@ -4,9 +4,18 @@ import org.gradle.api.DefaultTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import javax.inject.Inject;
+import org.gradle.process.*;
 
 public class BaseRecorderTask extends DefaultTask {
     public String hostname = null;
+
+
+    public ExecOperations execOperations = null;
+
+    public BaseRecorderTask(ExecOperations e) {
+        execOperations = e;
+    }
 
     @NotNull
     protected static String getExecutable() {
@@ -14,7 +23,7 @@ public class BaseRecorderTask extends DefaultTask {
     }
 
     public void ensureLibraryInstalled() {
-        getProject().exec((it) -> {
+        execOperations.exec((it) -> {
                 it.setExecutable("bash");
                 ArrayList<String> args = new ArrayList<String>();
                 args.add("-c");

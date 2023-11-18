@@ -5,10 +5,19 @@ import org.gradle.api.tasks.TaskAction;
 import java.io.File;
 import java.util.*;
 
+import javax.inject.Inject;
+import org.gradle.process.*;
+
+
 public class UploadScreenshotsTask extends BaseRecorderTask {
     public File directory = null;
     public String channel = null;
     public String mode = "record";
+
+    @Inject
+    public UploadScreenshotsTask(ExecOperations execOperations) {
+        super(execOperations);
+    }
 
     @TaskAction
     public void uploadScreenshots() {
@@ -18,7 +27,7 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
     }
 
     public void uploadChannel() {
-        getProject().exec((it) -> {
+        execOperations.exec((it) -> {
                 it.setExecutable(getExecutable());
             ArrayList<String> args = prepareArgs();
 
