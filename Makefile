@@ -4,15 +4,22 @@
 OTHER=other
 LOCAL_REPO=$(shell pwd)/localRepo
 ESCAPED_LOCAL_REPO=$(shell echo $(LOCAL_REPO) | sed 's/\//\\\//g')
+VERSION=$(shell grep '^version ' plugin/build.gradle | cut -d "'" -f 2)
 
 paparazzi-integration:
 	rm -rf $(OTHER)
 	git clone ssh://git@phabricator.tdrhq.com:2222/diffusion/23/paparazzi-example.git $(OTHER)
 
-	$(MAKE) update-maven-local
+	$(MAKE) update-other-repo
+	./gradlew :plugin:publish
+
 	cd $(OTHER) && ./gradlew :sample:recordPaparazziDebugScreenshotbot
 	cd $(OTHER) && ./gradlew :sample:verifyPaparazziDebugScreenshotbot
 
+fix-version:
+	cd $(OTHER) && sed -i "s/id 'io.screenshotbot.plugin' version '.*'/id 'io.screenshotbot.plugin' version '$(VERSION)'/" build.gradle */build.gradle
+
+update-other-repo: fix-version update-maven-local
 
 update-maven-local:
 	echo $(ESCAPED_LOCAL_REPO)
