@@ -20,4 +20,4 @@ update-maven-local:
 integration-tests-with-env: | paparazzi-integration
 
 integration-tests:
-	ANDROID_SDK=/opt/software/android-sdk $(MAKE) integration-tests-with-env
+	ANDROID_HOME=/opt/software/android-sdk $(MAKE) integration-tests-with-env
