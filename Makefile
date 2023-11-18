@@ -11,7 +11,7 @@ paparazzi-integration:
 	git clone ssh://git@phabricator.tdrhq.com:2222/diffusion/23/paparazzi-example.git $(OTHER)
 
 	$(MAKE) update-other-repo
-	./gradlew :plugin:publish
+
 
 	cd $(OTHER) && ./gradlew :sample:recordPaparazziDebugScreenshotbot
 	cd $(OTHER) && ./gradlew :sample:verifyPaparazziDebugScreenshotbot
@@ -25,7 +25,10 @@ update-maven-local:
 	echo $(ESCAPED_LOCAL_REPO)
 	sed -i 's/home\/arnold\/myLocal/$(ESCAPED_LOCAL_REPO)/' $(OTHER)/settings.gradle
 
-integration-tests-with-env: | paparazzi-integration
+publish: .PHONY
+	./gradlew :plugin:publish
+
+integration-tests-with-env: | publish paparazzi-integration
 
 integration-tests:
 	ANDROID_HOME=/opt/software/android-sdk $(MAKE) integration-tests-with-env
