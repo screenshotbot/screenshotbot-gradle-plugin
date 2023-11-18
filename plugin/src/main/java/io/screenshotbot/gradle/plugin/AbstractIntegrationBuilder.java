@@ -81,10 +81,6 @@ public abstract class AbstractIntegrationBuilder {
         String channelName = project.getPath();
         File imagesDirectory = getImagesDirectory(project, task);
 
-        configureTasks(task, mode, backupSnapshots, tasks, taskName, inputTaskName, uploadSnapshots, restoreSnapshots, snapshotsDir, imagesDirectory, channelName);
-    }
-
-    private void configureTasks(Task task, String mode, String backupSnapshots, TaskContainer tasks, String taskName, String inputTaskName, String uploadSnapshots, String restoreSnapshots, Directory snapshotsDir, File imagesDirectory, String channelName) {
         task.mustRunAfter(backupSnapshots);
         tasks.register(taskName,
                         RecordPaparazziTask.class)
