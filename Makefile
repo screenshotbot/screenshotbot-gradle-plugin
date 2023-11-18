@@ -17,4 +17,7 @@ update-maven-local:
 	echo $(ESCAPED_LOCAL_REPO)
 	sed -i 's/home\/arnold\/myLocal/$(ESCAPED_LOCAL_REPO)/' $(OTHER)/settings.gradle
 
-integration-tests: | paparazzi-integration
+integration-tests-with-env: | paparazzi-integration
+
+integration-tests:
+	ANDROID_SDK=/opt/software/android-sdk $(MAKE)integration-tests-with-env
