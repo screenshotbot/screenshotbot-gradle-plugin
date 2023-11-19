@@ -21,6 +21,14 @@ public class DropshotsIntegrationBuilder extends AbstractIntegrationBuilder {
         super(extension);
     }
 
+    @Override
+    public void apply(Project project) {
+        if (!project.hasProperty("dropshots.record")) {
+            throw new RuntimeException("In order to use the Screenshotbot plugin with Dropshots, you must either pass -Pdropshots.record, or set dropshots.record=true in your gradle.properties.");
+        }
+        super.apply(project);
+    }
+
 
     @Override
     protected @NotNull String getPluginId() {
