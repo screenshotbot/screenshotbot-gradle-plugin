@@ -137,14 +137,14 @@ public abstract class AbstractIntegrationBuilder {
             public void execute(Plugin plugin) {
                 project.afterEvaluate((project) -> {
                     TaskContainer tasks = project.getTasks();
-                    tasks.stream().forEach((task) -> {
 
-                        if (isApplicableTask(task)) {
-                            prepareTask(task, project, "record");
-                            prepareTask(task, project, "verify");
-                            prepareTask(task, project, "ci");
-                        }
+                    // Avoid a ConcurrentModificationException
+                    var filtered = tasks.stream().filter((it) -> isApplicableTask(it)).toList();
 
+                    filtered.stream().forEach((task) -> {
+                        prepareTask(task, project, "record");
+                        prepareTask(task, project, "verify");
+                        prepareTask(task, project, "ci");
                     });
                 });
             }
