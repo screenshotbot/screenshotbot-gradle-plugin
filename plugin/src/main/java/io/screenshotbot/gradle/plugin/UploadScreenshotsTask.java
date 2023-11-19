@@ -36,6 +36,7 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
                     args.add(mode);
                 }
 
+                args.add("--recursive");
                 args.add("--channel");
                 args.add(channel);
                 args.add("--directory");
