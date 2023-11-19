@@ -7,9 +7,9 @@ ESCAPED_LOCAL_REPO=$(shell echo $(LOCAL_REPO) | sed 's/\//\\\//g')
 VERSION=$(shell grep '^version ' plugin/build.gradle | cut -d "'" -f 2)
 
 paparazzi-integration: publish
-	echo
-	echo PAPARAZZI
-	echo
+	@echo
+	@echo PAPARAZZI
+	@echo
 
 	rm -rf $(OTHER)
 	git clone ssh://git@phabricator.tdrhq.com:2222/diffusion/23/paparazzi-example.git $(OTHER)
@@ -21,9 +21,9 @@ paparazzi-integration: publish
 	cd $(OTHER) && ./gradlew :sample:verifyPaparazziDebugScreenshotbot
 
 roborazzi-integration: publish
-	echo
-	echo ROBORAZZI:
-	echo
+	@echo
+	@echo ROBORAZZI:
+	@echo
 	rm -rf $(OTHER)
 	git clone ssh://git@phabricator.tdrhq.com:2222/diffusion/24/roborazzi.git $(OTHER)
 
