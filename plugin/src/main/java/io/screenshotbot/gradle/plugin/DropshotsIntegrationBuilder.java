@@ -22,13 +22,23 @@ public class DropshotsIntegrationBuilder extends AbstractIntegrationBuilder {
     }
 
     @Override
-    public void apply(Project project) {
-        if (!project.hasProperty("dropshots.record")) {
-            throw new RuntimeException("In order to use the Screenshotbot plugin with Dropshots, you must either pass -Pdropshots.record, or set dropshots.record=true in your gradle.properties.");
-        }
-        super.apply(project);
+    protected void configureBackupSnapshotsDependencies(Task it, String taskName) {
+        var recordMode = it.getProject().hasProperty("dropshots.record");
+        it.doFirst((tsk) -> {
+            if (!recordMode) {
+                throw new RuntimeException("In order to use the Screenshotbot plugin with Dropshots, you must either pass -Pdropshots.record, or set dropshots.record=true in your gradle.properties.");
+            }
+        });
+        super.configureBackupSnapshotsDependencies(it, taskName);
+
     }
 
+    @Override
+    protected void configureTaskDependencies(RecordPaparazziTask it, String sourceTask) {
+
+        super.configureTaskDependencies(it, sourceTask);
+
+    }
 
     @Override
     protected @NotNull String getPluginId() {
