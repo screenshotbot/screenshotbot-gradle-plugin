@@ -81,13 +81,14 @@ public abstract class AbstractIntegrationBuilder {
         String channelName = project.getPath();
         File imagesDirectory = getImagesDirectory(project, task);
 
-        task.mustRunAfter(backupSnapshots);
+        project.getTasks().getByName(getTaskThatRunsTests(task.getName())).mustRunAfter(backupSnapshots);
+
         tasks.register(taskName,
                         RecordPaparazziTask.class)
                 .configure((it) -> {
                     it.setGroup("Screenshotbot");
                     it.setDescription("Records " + getPluginName() + " screenshots into Screenshotbot");
-                    it.dependsOn(inputTaskName);
+                    it.dependsOn(getTaskThatRunsTests(inputTaskName));
                     it.dependsOn(backupSnapshots);
                     it.dependsOn(uploadSnapshots);
                     it.dependsOn(restoreSnapshots);
@@ -110,7 +111,7 @@ public abstract class AbstractIntegrationBuilder {
                     it.mode = mode;
                     it.hostname = extension.getHostname();
 
-                    it.mustRunAfter(inputTaskName);
+                    it.mustRunAfter(getTaskThatRunsTests(inputTaskName));
                     it.doFirst((innerTask) -> {
 
                     });
@@ -124,6 +125,11 @@ public abstract class AbstractIntegrationBuilder {
                     });
                 });
     }
+
+    String getTaskThatRunsTests(String inputTaskName) {
+        return inputTaskName;
+    }
+
 
     protected void configureBackupSnapshotsDependencies(Task it, String taskName) {
     }
