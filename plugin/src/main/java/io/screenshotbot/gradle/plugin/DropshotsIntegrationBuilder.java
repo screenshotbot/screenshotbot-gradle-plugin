@@ -34,13 +34,6 @@ public class DropshotsIntegrationBuilder extends AbstractIntegrationBuilder {
     }
 
     @Override
-    protected void configureTaskDependencies(RecordPaparazziTask it, String sourceTask) {
-
-        super.configureTaskDependencies(it, sourceTask);
-
-    }
-
-    @Override
     protected @NotNull String getPluginId() {
         return "com.dropbox.dropshots";
     }
