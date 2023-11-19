@@ -38,7 +38,7 @@ update-maven-local:
 publish: .PHONY
 	./gradlew :plugin:publish
 
-integration-tests-with-env: | publish paparazzi-integration
+integration-tests-with-env: | publish paparazzi-integration roborazzi-integration
 
 integration-tests:
 	ANDROID_HOME=/opt/software/android-sdk $(MAKE) integration-tests-with-env
