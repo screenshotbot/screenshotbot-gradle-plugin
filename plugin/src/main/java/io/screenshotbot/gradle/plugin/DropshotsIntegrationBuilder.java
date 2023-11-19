@@ -21,33 +21,6 @@ public class DropshotsIntegrationBuilder extends AbstractIntegrationBuilder {
         super(extension);
     }
 
-    @Override
-    protected void prepareTask(Task task, Project project, String mode) {
-
-        String runRecord = getTaskThatRunsTests(task.getName());
-        String path = project.getPath();
-
-        if (mode.equals("record")) { // we don't want to call this thrice.
-            project.getTasks().register(runRecord, GradleBuild.class).configure((it) -> {
-                List<String> taskList = new ArrayList<>();
-                taskList.add(path + task.getName());
-                it.setTasks(taskList);
-                StartParameter startParameter = new StartParameter();
-                Map<String, String> args = new HashMap<>();
-                args.put("dropshots.record", "true");
-                startParameter.setSystemPropertiesArgs(args);
-                it.setStartParameter(startParameter);
-            });
-        }
-
-        super.prepareTask(task, project, mode);
-    }
-
-    @Override
-    String getTaskThatRunsTests(String inputTaskName) {
-        return inputTaskName + "ScreenshotbotHelper";
-    }
-
 
     @Override
     protected @NotNull String getPluginId() {

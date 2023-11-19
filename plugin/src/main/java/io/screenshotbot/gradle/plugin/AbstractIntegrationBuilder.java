@@ -1,6 +1,5 @@
 package io.screenshotbot.gradle.plugin;
 
-import org.apache.tools.ant.util.ResourceUtils;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -81,14 +80,15 @@ public abstract class AbstractIntegrationBuilder {
         String channelName = project.getPath();
         File imagesDirectory = getImagesDirectory(project, task);
 
-        project.getTasks().getByName(getTaskThatRunsTests(task.getName())).mustRunAfter(backupSnapshots);
+        String inputTaskName1 = task.getName();
+        project.getTasks().getByName(inputTaskName1).mustRunAfter(backupSnapshots);
 
         tasks.register(taskName,
                         RecordPaparazziTask.class)
                 .configure((it) -> {
                     it.setGroup("Screenshotbot");
                     it.setDescription("Records " + getPluginName() + " screenshots into Screenshotbot");
-                    it.dependsOn(getTaskThatRunsTests(inputTaskName));
+                    it.dependsOn(inputTaskName);
                     it.dependsOn(backupSnapshots);
                     it.dependsOn(uploadSnapshots);
                     it.dependsOn(restoreSnapshots);
@@ -111,7 +111,7 @@ public abstract class AbstractIntegrationBuilder {
                     it.mode = mode;
                     it.hostname = extension.getHostname();
 
-                    it.mustRunAfter(getTaskThatRunsTests(inputTaskName));
+                    it.mustRunAfter(inputTaskName);
                     it.doFirst((innerTask) -> {
 
                     });
@@ -124,10 +124,6 @@ public abstract class AbstractIntegrationBuilder {
                         restoreDir(snapshotsDir);
                     });
                 });
-    }
-
-    String getTaskThatRunsTests(String inputTaskName) {
-        return inputTaskName;
     }
 
 
