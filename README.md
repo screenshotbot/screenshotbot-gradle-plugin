@@ -10,10 +10,8 @@ Currently we support:
 * Facebook's screenshot-tests-for-android
 * Shot
 * Roborazzi
+* Dropshots [see footnote]
 
-But we eventually plan to support:
-
-* Dropshots
 
 # Getting started
 
@@ -66,6 +64,14 @@ subprojects {
 }
 
 ```
+
+# Footnotes
+
+For Dropshots, we currently require you to pass `-Pdropshots.record`
+to each of the Screenshotbot tasks. Once you fully migrate to
+Screenshotbot, you can just add `dropshots.record=true` in your
+`gradle.properties`. We plan to remove this requirement in the future,
+but we think it requires some patches pushed to Dropshots.
 
 # License
 
