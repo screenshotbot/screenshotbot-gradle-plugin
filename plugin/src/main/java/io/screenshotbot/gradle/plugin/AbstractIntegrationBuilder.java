@@ -80,8 +80,7 @@ public abstract class AbstractIntegrationBuilder {
         String channelName = project.getPath();
         File imagesDirectory = getImagesDirectory(project, task);
 
-        String inputTaskName1 = task.getName();
-        project.getTasks().getByName(inputTaskName1).mustRunAfter(backupSnapshots);
+        task.mustRunAfter(backupSnapshots);
 
         tasks.register(taskName,
                         RecordPaparazziTask.class)
