@@ -4,13 +4,21 @@ import org.gradle.api.*;
 
 public class ScreenshotbotPlugin implements Plugin<Project> {
     public static class Extension {
+
         private String hostname = "https://api.screenshotbot.io";
+        
         private String batch = null;
 
         public String getHostname() {
             return hostname;
         }
 
+        /*
+         * The API endpoint to use for Screenshotbot.
+         *
+         * This must be changed when using the Open-source or Enterprise
+         * versions of screenshotbot.
+         */
         public void setHostname(String hostname) {
             this.hostname = hostname;
         }
@@ -18,6 +26,13 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
             return batch;
         }
 
+        /*
+         * "Batch" all screenshots from all Gradle modules under a
+         * single GitHub check result. (Or GitLab, BitBucket build
+         * status etc.)
+         *
+         * This won't affect local runs.
+         */
         public void setBatch(String batch) {
             this.batch = batch;
         }
