@@ -13,6 +13,7 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
     public File directory = null;
     public String channel = null;
     public String mode = "record";
+    public String batch = null;
 
     @Inject
     public UploadScreenshotsTask(ExecOperations execOperations) {
@@ -28,21 +29,27 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
 
     public void uploadChannel() {
         execOperations.exec((it) -> {
-                it.setExecutable(getExecutable());
+            it.setExecutable(getExecutable());
             ArrayList<String> args = prepareArgs();
 
             if (!mode.equals("ci")) {
-                    args.add("dev");
-                    args.add(mode);
-                }
+                args.add("dev");
+                args.add(mode);
+            }
 
-                args.add("--channel");
-                args.add(channel);
-                args.add("--directory");
-                args.add(directory.toString());
+            args.add("--recursive");
+            args.add("--channel");
+            args.add(channel);
+            args.add("--directory");
+            args.add(directory.toString());
 
-                it.setArgs(args);
-            });
+            if (this.batch != null && this.batch.length() > 0) {
+                args.add("--batch");
+                args.add(this.batch);
+            }
+
+            it.setArgs(args);
+        });
     }
 
 
