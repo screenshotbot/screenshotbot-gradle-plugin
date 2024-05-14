@@ -5,6 +5,7 @@ import org.gradle.api.*;
 public class ScreenshotbotPlugin implements Plugin<Project> {
     public static class Extension {
         private String hostname = "https://api.screenshotbot.io";
+        private String batch = null;
 
         public String getHostname() {
             return hostname;
@@ -12,6 +13,13 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
         public void setHostname(String hostname) {
             this.hostname = hostname;
+        }
+        public String getBatch() {
+            return batch;
+        }
+
+        public void setBatch(String batch) {
+            this.batch = batch;
         }
     }
     @Override

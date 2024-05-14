@@ -109,6 +109,7 @@ public abstract class AbstractIntegrationBuilder {
                     it.channel = channelName;
                     it.mode = mode;
                     it.hostname = extension.getHostname();
+                    it.batch = extension.getBatch();
 
                     it.mustRunAfter(inputTaskName);
                     it.doFirst((innerTask) -> {
