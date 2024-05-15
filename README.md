@@ -38,6 +38,7 @@ locally, and does not affect your CI state. You will have to run
 `./gradlew :installScreenshotbot` and follow the instructions to
 install a key locally. Once installed, we'll use the keys in future runs.
 
+
 The first task will be run in your CI, in place of simply `:verifyPaparazziDebug`.
 Screenshotbot does not require any screenshots to be stored in your repository,
 we'll run the record step and upload the screenshots to Screenshotbot, and also
