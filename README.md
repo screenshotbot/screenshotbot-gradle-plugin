@@ -7,6 +7,7 @@ screenshot testing libraries with Screenshotbot.
 Currently we support:
 
 * Paparazzi
+* [Compose Preview Screenshot Tests](https://developer.android.com/studio/preview/compose-screenshot-testing) (from Google)
 * Facebook's screenshot-tests-for-android
 * Shot
 * Roborazzi
