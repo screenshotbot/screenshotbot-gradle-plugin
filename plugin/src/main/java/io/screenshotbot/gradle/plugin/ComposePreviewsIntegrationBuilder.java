@@ -6,6 +6,10 @@ import org.gradle.api.file.Directory;
 import org.jetbrains.annotations.NotNull;
 
 public class ComposePreviewsIntegrationBuilder extends AbstractIntegrationBuilder {
+
+    public static final String PREFIX = "update";
+    public static final String SUFFIX = "ScreenshotTest";
+
     public ComposePreviewsIntegrationBuilder(ScreenshotbotPlugin.Extension extension) {
         super(extension);
     }
@@ -17,21 +21,34 @@ public class ComposePreviewsIntegrationBuilder extends AbstractIntegrationBuilde
 
     @Override
     protected boolean isApplicableTask(Task task) {
-        return false;
+        return task.getName().startsWith(PREFIX) && task.getName().endsWith(SUFFIX);
     }
 
     @Override
     protected @NotNull String getPluginName() {
-        return null;
+        return "ComposePreviews";
     }
 
     @Override
     protected @NotNull String generateTaskName(Task task, String mode) {
-        return null;
+        String suffix = task.getName().substring(PREFIX.length());
+        if (mode.equals("ci")) {
+            return "recordAndVerify" + suffix;
+        } else if (mode.equals("record")) {
+            return "record" + suffix;
+        } else if (mode.equals("verify")) {
+            return "verify" + suffix;
+        } else {
+            throw new RuntimeException("unknown mode: " + mode);
+        }
     }
 
     @Override
     protected @NotNull Directory getSnapshotsDir(Project project, Task task) {
-        return null;
+        return project.getLayout().getProjectDirectory().dir("src/"  + getVariant(task) + "/screenshotTest/reference");
+    }
+
+    private String getVariant(Task task) {
+        return downcaseFirst(task.getName().substring(PREFIX.length(), task.getName().length() - SUFFIX.length()));
     }
 }
