@@ -20,7 +20,7 @@ Including the plugin is pretty straightforward. In your
 
 ```
 plugins {
-  id 'io.screenshotbot.plugin' version '1.10'
+  id 'io.screenshotbot.plugin' version '1.11'
 }
 ```
 
@@ -37,6 +37,7 @@ The last two tasks are meant to be used by developers while working
 locally, and does not affect your CI state. You will have to run
 `./gradlew :installScreenshotbot` and follow the instructions to
 install a key locally. Once installed, we'll use the keys in future runs.
+
 
 The first task will be run in your CI, in place of simply `:verifyPaparazziDebug`.
 Screenshotbot does not require any screenshots to be stored in your repository,

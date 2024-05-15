@@ -2,6 +2,8 @@ package io.screenshotbot.gradle.plugin;
 
 import org.gradle.api.*;
 
+import java.awt.*;
+
 public class ScreenshotbotPlugin implements Plugin<Project> {
     public static class Extension {
 
@@ -46,6 +48,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         new ShotIntegrationBuilder(extension).apply(target);
         new RoborazziIntegrationBuilder(extension).apply(target);
         new DropshotsIntegrationBuilder(extension).apply(target);
+        new ComposePreviewsIntegrationBuilder(extension).apply(target);
 
         target.getTasks().register("installScreenshotbot", InstallScreenshotbotTask.class)
                 .configure((it) -> {
