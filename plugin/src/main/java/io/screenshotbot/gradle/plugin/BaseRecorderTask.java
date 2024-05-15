@@ -27,7 +27,7 @@ public class BaseRecorderTask extends DefaultTask {
                 it.setExecutable("bash");
                 ArrayList<String> args = new ArrayList<String>();
                 args.add("-c");
-                args.add("curl https://screenshotbot.io/recorder.sh | sh");
+                args.add("curl https://cdn.screenshotbot.io/recorder.sh | sh");
                 it.setArgs(args);
 
             });
