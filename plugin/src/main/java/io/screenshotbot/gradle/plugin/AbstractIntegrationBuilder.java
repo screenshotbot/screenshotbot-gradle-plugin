@@ -185,4 +185,12 @@ public abstract class AbstractIntegrationBuilder {
             return str.substring(0,1).toUpperCase() + str.substring(1);
         }
     }
+
+    public String downcaseFirst(String str) {
+        if (str.equals("")) {
+            return str;
+        } else {
+            return str.substring(0,1).toLowerCase() + str.substring(1);
+        }
+    }
 }
