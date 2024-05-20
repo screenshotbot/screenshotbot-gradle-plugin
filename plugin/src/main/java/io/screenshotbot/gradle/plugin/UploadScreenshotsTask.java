@@ -43,7 +43,7 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
             args.add("--directory");
             args.add(directory.toString());
 
-            if (this.batch != null && this.batch.length() > 0) {
+            if (this.batch != null && this.batch.length() > 0 && mode.equals("ci")) {
                 args.add("--batch");
                 args.add(this.batch);
             }
