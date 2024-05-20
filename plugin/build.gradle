@@ -13,7 +13,7 @@ plugins {
 
 
 group 'io.screenshotbot'
-version '1.11'
+version '1.12'
 
 repositories {
     // Use Maven Central for resolving dependencies.
