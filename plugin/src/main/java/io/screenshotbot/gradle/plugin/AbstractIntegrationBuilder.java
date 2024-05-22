@@ -106,7 +106,7 @@ public abstract class AbstractIntegrationBuilder {
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                 .configure((it) -> {
                     it.directory = imagesDirectory;
-                    it.channel = channelName;
+                    it.channel = extension.getChannelPrefix() + channelName;
                     it.mode = mode;
                     it.hostname = extension.getHostname();
                     it.batch = extension.getBatch();

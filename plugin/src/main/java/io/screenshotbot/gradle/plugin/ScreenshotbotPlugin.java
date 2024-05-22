@@ -9,6 +9,21 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         
         private String batch = null;
 
+        public String getChannelPrefix() {
+            return channelPrefix;
+        }
+
+        /*
+         * By default we use the Gradle module name to determine the channel
+         * name in Screenshotbot. But if you have multiple Gradle projects, this
+         * might lead to a name collision. Using a channelPrefix
+         */
+        public void setChannelPrefix(String channelPrefix) {
+            this.channelPrefix = channelPrefix;
+        }
+
+        private String channelPrefix = "";
+
         public String getHostname() {
             return hostname;
         }
