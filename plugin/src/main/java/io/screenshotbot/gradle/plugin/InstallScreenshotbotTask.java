@@ -19,11 +19,11 @@ public class InstallScreenshotbotTask extends BaseRecorderTask {
     @Inject
     public InstallScreenshotbotTask(ExecOperations execOperations) {
         super(execOperations);
+        dependsOn(":downloadScreenshotbotRecorder");
     }
 
     @TaskAction
     public void installScreenshotbot() {
-        ensureLibraryInstalled();
         UserInputHandler service = getServices().get(UserInputHandler.class);
 
 

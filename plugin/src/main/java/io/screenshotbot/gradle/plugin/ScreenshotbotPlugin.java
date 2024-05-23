@@ -71,5 +71,10 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                    it.setDescription("Install Screenshotbot credentials interactively");
                    it.hostname = extension.getHostname();
                 });
+
+
+        if (target.getRootProject() == target) {
+            target.getTasks().register("downloadScreenshotbotRecorder", DownloadRecorderTask.class);
+        }
     }
 }
