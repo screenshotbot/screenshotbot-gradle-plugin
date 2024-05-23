@@ -73,8 +73,8 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                 });
 
 
-        if (target.getRootProject() == target) {
-            target.getTasks().register("downloadScreenshotbotRecorder", DownloadRecorderTask.class);
+        if (target.getRootProject().getTasks().findByName("downloadScreenshotbotRecorder") == null) {
+            target.getRootProject().getTasks().register("downloadScreenshotbotRecorder", DownloadRecorderTask.class);
         }
     }
 }
