@@ -18,6 +18,7 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
     @Inject
     public UploadScreenshotsTask(ExecOperations execOperations) {
         super(execOperations);
+        dependsOn(":downloadScreenshotbotRecorder");
     }
 
     @TaskAction
