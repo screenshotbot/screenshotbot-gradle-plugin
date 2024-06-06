@@ -23,7 +23,6 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
 
     @TaskAction
     public void uploadScreenshots() {
-        ensureLibraryInstalled();
         uploadChannel();
         System.out.println("Uploading: " + directory + " " + channel);
     }
