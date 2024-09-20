@@ -53,6 +53,17 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         public void setBatch(String batch) {
             this.batch = batch;
         }
+
+        public String getMainBranch() {
+            return mainBranch;
+        }
+
+        public void setMainBranch(String mainBranch) {
+            this.mainBranch = mainBranch;
+        }
+
+        private String mainBranch;
+
     }
     @Override
     public void apply(Project target) {

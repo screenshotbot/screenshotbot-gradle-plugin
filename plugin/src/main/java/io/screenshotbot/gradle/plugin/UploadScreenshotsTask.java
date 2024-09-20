@@ -15,6 +15,8 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
     public String mode = "record";
     public String batch = null;
 
+    public String mainBranch = null;
+
     @Inject
     public UploadScreenshotsTask(ExecOperations execOperations) {
         super(execOperations);
@@ -48,6 +50,10 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
                 args.add(this.batch);
             }
 
+            if (this.mainBranch != null && this.mainBranch.length() > 0) {
+                args.add("--main-branch");
+                args.add(this.mainBranch);
+            }
             it.setArgs(args);
         });
     }
