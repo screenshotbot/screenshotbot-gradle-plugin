@@ -110,6 +110,7 @@ public abstract class AbstractIntegrationBuilder {
                     it.mode = mode;
                     it.hostname = extension.getHostname();
                     it.batch = extension.getBatch();
+                    it.mainBranch = extension.getMainBranch();
 
                     it.mustRunAfter(inputTaskName);
                     it.doFirst((innerTask) -> {
