@@ -12,7 +12,7 @@ paparazzi-integration: publish
 	@echo
 
 	rm -rf $(OTHER)
-	git clone ssh://git@phabricator.tdrhq.com:2222/diffusion/23/paparazzi-example.git $(OTHER)
+	git clone https://github.com/screenshotbot/paparazzi-example.git $(OTHER)
 
 	$(MAKE) update-other-repo
 
