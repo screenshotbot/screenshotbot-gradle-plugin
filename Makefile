@@ -35,7 +35,7 @@ roborazzi-integration: publish
 
 fix-version:
 	cd $(OTHER) && sed -i "s/id 'io.screenshotbot.plugin' version '.*'/id 'io.screenshotbot.plugin' version '$(VERSION)'/" build.gradle */build.gradle
-	cd $(OTHER) && sed -i "s#/home/arnold/builds/screenshotbot-gradle/localRepo#$(shell pwd)/localRepo#g" 
+	cd $(OTHER) && sed -i "s#/home/arnold/builds/screenshotbot-gradle/localRepo#$(shell pwd)/localRepo#g" build.gradle */build.gradle
 update-other-repo: fix-version update-maven-local
 
 update-maven-local:
