@@ -2,7 +2,7 @@ package io.screenshotbot.gradle.plugin;
 
 import org.gradle.api.*;
 
-import java.awt.*;
+import java.util.List;
 
 public class ScreenshotbotPlugin implements Plugin<Project> {
     public static class Extension {
@@ -60,6 +60,21 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
         public void setMainBranch(String mainBranch) {
             this.mainBranch = mainBranch;
+        }
+
+        private List<String> extraArgs;
+
+        /**
+         * Additional arguments to pass to the Screenshotbot CLI tool.
+         *
+         * @param extraArgs
+         */
+        public void setExtraArgs(List<String> extraArgs) {
+            this.extraArgs = extraArgs;
+        }
+
+        public List<String> getExtraArgs() {
+            return this.extraArgs;
         }
 
         private String mainBranch;
