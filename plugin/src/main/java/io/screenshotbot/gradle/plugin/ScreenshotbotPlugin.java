@@ -2,6 +2,7 @@ package io.screenshotbot.gradle.plugin;
 
 import org.gradle.api.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScreenshotbotPlugin implements Plugin<Project> {
@@ -62,7 +63,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
             this.mainBranch = mainBranch;
         }
 
-        private List<String> extraArgs;
+        private List<String> extraArgs = new ArrayList<>();
 
         /**
          * Additional arguments to pass to the Screenshotbot CLI tool.
