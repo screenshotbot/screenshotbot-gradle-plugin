@@ -15,6 +15,8 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
     public String mode = "record";
     public String batch = null;
 
+    public List<String> extraArgs = new ArrayList<>();
+
     public String mainBranch = null;
 
     @Inject
@@ -54,6 +56,8 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
                 args.add("--main-branch");
                 args.add(this.mainBranch);
             }
+
+            args.addAll(extraArgs);
             it.setArgs(args);
         });
     }
