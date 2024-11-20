@@ -39,6 +39,8 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
             if (!mode.equals("ci")) {
                 args.add("dev");
                 args.add(mode);
+            } else {
+                args.add("--commit-limit=0");
             }
 
             args.add("--recursive");

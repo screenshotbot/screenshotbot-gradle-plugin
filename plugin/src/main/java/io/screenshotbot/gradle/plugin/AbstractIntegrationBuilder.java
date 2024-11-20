@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
@@ -95,6 +96,7 @@ public abstract class AbstractIntegrationBuilder {
                     configureTaskDependencies(it, inputTaskName);
 
                 });
+
         tasks.register(backupSnapshots).configure((it) -> {
             configureBackupSnapshotsDependencies(it, inputTaskName);
             it.doFirst((it2) -> {
@@ -113,8 +115,9 @@ public abstract class AbstractIntegrationBuilder {
                     it.mainBranch = extension.getMainBranch();
                     it.extraArgs = extension.getExtraArgs();
                     it.mustRunAfter(inputTaskName);
-                    it.doFirst((innerTask) -> {
+                    it.dependsOn(":uploadCommitGraphOnScreenshotbot_" + String.valueOf(extension.getMainBranch()));
 
+                    it.doFirst((innerTask) -> {
                     });
                 });
 
