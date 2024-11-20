@@ -19,6 +19,11 @@ public class BaseRecorderTask extends DefaultTask {
 
     @NotNull
     protected static String getExecutable() {
+        String override = System.getenv("SCREENSHOTBOT_RECORDER_OVERRIDE");
+        if (override != null) {
+            // Mostly used for testing
+            return override;
+        }
         return System.getenv("HOME") + "/screenshotbot/recorder";
     }
 
