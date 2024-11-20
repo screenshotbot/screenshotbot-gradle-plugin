@@ -31,6 +31,6 @@ public class UploadCommitGraphTask extends BaseRecorderTask {
                 args.add(mainBranch);
             }
             it.setArgs(args);
-        })
+        });
     }
 }
