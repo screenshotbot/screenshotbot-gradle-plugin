@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
@@ -95,11 +96,13 @@ public abstract class AbstractIntegrationBuilder {
                     configureTaskDependencies(it, inputTaskName);
 
                 });
+
         tasks.register(backupSnapshots).configure((it) -> {
+            var uploadCommitGraph = project.getRootProject().getTasks().getByName("uploadCommitGraphOnScreenshotbot");
             configureBackupSnapshotsDependencies(it, inputTaskName);
             it.doFirst((it2) -> {
                 backupDir(snapshotsDir);
-            });
+            }).setDependsOn(Arrays.asList(uploadCommitGraph));
         });
 
 
