@@ -92,6 +92,12 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         new DropshotsIntegrationBuilder(extension).apply(target);
         new ComposePreviewsIntegrationBuilder(extension).apply(target);
 
+        target.getTasks().register("uploadCommitGraphOnScreenshotbot", UploadCommitGraphTask.class)
+                .configure((it) -> {
+                    // TODO: I don't know how to make this globally configured, hmm. Perhaps name the task with the branchname
+                    it.setMainBranch(extension.getMainBranch());
+                });
+
         target.getTasks().register("installScreenshotbot", InstallScreenshotbotTask.class)
                 .configure((it) -> {
                    it.setGroup("Screenshotbot");
@@ -99,13 +105,13 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                    it.hostname = extension.getHostname();
                 });
 
-        target.getTasks().register("uploadCommitGraphOnScreenshotbot", UploadCommitGraphTask.class)
-                .configure((it) -> {
-                    it.setMainBranch(extension.getMainBranch());
-                });
 
-        if (target.getRootProject().getTasks().findByName("downloadScreenshotbotRecorder") == null) {
-            target.getRootProject().getTasks().register("downloadScreenshotbotRecorder", DownloadRecorderTask.class);
+        registerRootTask(target, "downloadScreenshotbotRecorder", DownloadRecorderTask.class);
+    }
+
+    private static void registerRootTask(Project target, String taskName, Class<? extends Task> taskClass) {
+        if (target.getRootProject().getTasks().findByName(taskName) == null) {
+            target.getRootProject().getTasks().register(taskName, taskClass);
         }
     }
 }
