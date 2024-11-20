@@ -101,8 +101,6 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
         target.getTasks().register("updateCommitGraphOnScreenshotbot", UploadCommitGraphTask.class)
                 .configure((it) -> {
-                    it.setGroup("Screenshotbot");
-                    it.setDescription("Update commit graph on Screenshotbot, typically not called directly");
                     it.setMainBranch(extension.getMainBranch());
                 });
 
