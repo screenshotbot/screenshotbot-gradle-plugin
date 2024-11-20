@@ -99,6 +99,10 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                    it.hostname = extension.getHostname();
                 });
 
+        target.getTasks().register("updateCommitGraphOnScreenshotbot", UploadCommitGraphTask.class)
+                .configure((it) -> {
+                    it.setMainBranch(extension.getMainBranch());
+                });
 
         if (target.getRootProject().getTasks().findByName("downloadScreenshotbotRecorder") == null) {
             target.getRootProject().getTasks().register("downloadScreenshotbotRecorder", DownloadRecorderTask.class);
