@@ -31,9 +31,9 @@ public class UploadCommitGraphTask extends BaseRecorderTask {
                 args.add(mainBranch);
             }
 
-            // TODO: remove
-            args.add("--repo-url");
-            args.add("dfdfd");
+            // TODO: guess this locally better
+            //args.add("--repo-url");
+            //args.add("dfdfd");
 
             it.setArgs(args);
         });
