@@ -98,11 +98,10 @@ public abstract class AbstractIntegrationBuilder {
                 });
 
         tasks.register(backupSnapshots).configure((it) -> {
-            var uploadCommitGraph = project.getRootProject().getTasks().getByName("uploadCommitGraphOnScreenshotbot");
             configureBackupSnapshotsDependencies(it, inputTaskName);
             it.doFirst((it2) -> {
                 backupDir(snapshotsDir);
-            }).setDependsOn(Arrays.asList(uploadCommitGraph));
+            });
         });
 
 
@@ -116,8 +115,9 @@ public abstract class AbstractIntegrationBuilder {
                     it.mainBranch = extension.getMainBranch();
                     it.extraArgs = extension.getExtraArgs();
                     it.mustRunAfter(inputTaskName);
-                    it.doFirst((innerTask) -> {
+                    it.dependsOn(":uploadCommitGraphOnScreenshotbot_" + String.valueOf(extension.getMainBranch()));
 
+                    it.doFirst((innerTask) -> {
                     });
                 });
 

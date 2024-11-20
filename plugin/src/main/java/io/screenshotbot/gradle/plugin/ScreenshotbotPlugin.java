@@ -92,11 +92,17 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         new DropshotsIntegrationBuilder(extension).apply(target);
         new ComposePreviewsIntegrationBuilder(extension).apply(target);
 
-        target.getTasks().register("uploadCommitGraphOnScreenshotbot", UploadCommitGraphTask.class)
-                .configure((it) -> {
-                    // TODO: I don't know how to make this globally configured, hmm. Perhaps name the task with the branchname
-                    it.setMainBranch(extension.getMainBranch());
-                });
+
+        String uploadCommitGraphOnScreenshotbot = "uploadCommitGraphOnScreenshotbot_" +
+                String.valueOf(extension.getMainBranch());
+        if (target.getRootProject().getTasks().findByName(uploadCommitGraphOnScreenshotbot) == null) {
+            target.getRootProject().getTasks().register(uploadCommitGraphOnScreenshotbot, UploadCommitGraphTask.class)
+                    .configure((it) -> {
+                        // The CLI tool needs the main branch in order to
+                        // fetch commits from the origin.
+                        it.setMainBranch(extension.getMainBranch());
+                    });
+        }
 
         target.getTasks().register("installScreenshotbot", InstallScreenshotbotTask.class)
                 .configure((it) -> {
