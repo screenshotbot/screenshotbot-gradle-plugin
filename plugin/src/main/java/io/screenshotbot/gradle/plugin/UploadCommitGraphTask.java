@@ -24,12 +24,17 @@ public class UploadCommitGraphTask extends BaseRecorderTask {
             it.setExecutable((getExecutable()));
             ArrayList<String> args = new ArrayList<>();
             args.add("ci");
-            args.add("update-commit-graph");
+            args.add("upload-commit-graph");
 
             if (mainBranch != null && mainBranch.length() > 0) {
                 args.add("--main-branch");
                 args.add(mainBranch);
             }
+
+            // TODO: remove
+            args.add("--repo-url");
+            args.add("dfdfd");
+
             it.setArgs(args);
         });
     }
