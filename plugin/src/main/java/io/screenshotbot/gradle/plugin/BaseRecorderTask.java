@@ -34,6 +34,7 @@ public class BaseRecorderTask extends DefaultTask {
                 args.add("-c");
                 args.add("curl https://cdn.screenshotbot.io/recorder.sh | sh");
                 it.setArgs(args);
+
             });
     }
 
