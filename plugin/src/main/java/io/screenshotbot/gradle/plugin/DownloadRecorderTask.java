@@ -36,17 +36,17 @@ public class DownloadRecorderTask extends BaseRecorderTask {
     }
 
     private String readAll(BufferedReader reader) {
-        String result = "";
-        String line;
+        var result = new StringBuilder();
+        String line = null;
         try {
             while ((line = reader.readLine()) != null) {
-                result += line;
-                result += "\n";
+                result.append(line);
+                result.append("\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return result;
+        return result.toString();
     }
 }
