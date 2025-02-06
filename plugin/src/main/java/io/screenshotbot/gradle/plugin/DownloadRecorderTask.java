@@ -4,6 +4,7 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.process.ExecOperations;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 public class DownloadRecorderTask extends BaseRecorderTask {
 
@@ -14,6 +15,13 @@ public class DownloadRecorderTask extends BaseRecorderTask {
 
     @TaskAction
     public void downloadRecorder() {
-        ensureLibraryInstalled();
+        execOperations.exec((it) -> {
+                it.setExecutable("bash");
+                ArrayList<String> args = new ArrayList<String>();
+                args.add("-c");
+                args.add("curl https://cdn.screenshotbot.io/recorder.sh | sh");
+                it.setArgs(args);
+
+            });
     }
 }
