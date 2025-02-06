@@ -4,7 +4,7 @@ import org.gradle.api.DefaultTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import javax.inject.Inject;
+
 import org.gradle.process.*;
 
 public class BaseRecorderTask extends DefaultTask {
@@ -25,17 +25,6 @@ public class BaseRecorderTask extends DefaultTask {
             return override;
         }
         return System.getenv("HOME") + "/screenshotbot/recorder";
-    }
-
-    public void ensureLibraryInstalled() {
-        execOperations.exec((it) -> {
-                it.setExecutable("bash");
-                ArrayList<String> args = new ArrayList<String>();
-                args.add("-c");
-                args.add("curl https://cdn.screenshotbot.io/recorder.sh | sh");
-                it.setArgs(args);
-
-            });
     }
 
     @NotNull
