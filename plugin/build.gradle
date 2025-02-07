@@ -25,7 +25,7 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        simplePlugin {
+        screenshotbotPlugin {
             id = 'io.screenshotbot.plugin'
             displayName = 'Screenshotbot Gradle Plugin'
             website = "https://screenshotbot.io"
@@ -44,7 +44,22 @@ publishing {
             url = '../localRepo'
         }
     }
+
+    publications {
+        screenshotbotPlugin(MavenPublication) {
+            pom {
+                scm {
+                    connection = 'scm:git@github.com:screenshotbot/screenshotbot-gradle-plugin.git'
+                    url = 'https://github.com/screenshotbot/screenshotbot-gradle-plugin/'
+                }
+            }
+
+        }
+    }
+
 }
+
+
 
 testing {
     suites {
@@ -62,3 +77,4 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
