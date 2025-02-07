@@ -6,6 +6,7 @@ LOCAL_REPO=$(shell pwd)/localRepo
 ESCAPED_LOCAL_REPO=$(shell echo $(LOCAL_REPO) | sed 's/\//\\\//g')
 VERSION=$(shell grep '^version ' plugin/build.gradle | cut -d "'" -f 2)
 REMOTE_RECORDER_VERSION=$(shell curl https://screenshotbot.io/recorder-version/current)
+REMOTE_RECORDER_VERSION=releases/2.11.0/
 PLATFORMS=darwin linux linux-arm64
 
 paparazzi-integration: publish
