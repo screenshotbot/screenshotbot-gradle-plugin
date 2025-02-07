@@ -33,9 +33,6 @@ gradlePlugin {
             description = 'Automates most of the integration with Screenshotbot for popular Android screenshot testing libraries.'
             implementationClass = 'io.screenshotbot.gradle.plugin.ScreenshotbotPlugin'
             tags = ["screenshot-testing", "screenshotbot"]
-
-
-
         }
     }
 }
