@@ -58,5 +58,5 @@ copy-binaries:
 	for artifact in $(ARTIFACTS) ; do \
         echo Downloading $$artifact ; \
 		echo $(REMOTE_RECORDER_VERSION) > plugin/src/main/resources/io/screenshotbot/gradle/version.txt ; \
-		curl https://screenshotbot.io/artifact/releases/$(REMOTE_RECORDER_VERSION)/$$artifact -o plugin/src/main/resources/io/screenshotbot/gradle/$$artifact ; \
+		curl https://screenshotbot.io/artifact/$(REMOTE_RECORDER_VERSION)$$artifact -o plugin/src/main/resources/io/screenshotbot/gradle/$$artifact ; \
     done
