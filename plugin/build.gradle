@@ -43,7 +43,6 @@ publishing {
             name = 'myLocal'
             url = '../localRepo'
         }
-
     }
 
     publications {
