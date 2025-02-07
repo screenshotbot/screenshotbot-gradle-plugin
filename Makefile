@@ -61,4 +61,6 @@ copy-binaries:
         echo Downloading $$artifact ; \
 		echo $(REMOTE_RECORDER_VERSION) > version.txt ; \
 		curl https://screenshotbot.io/artifact/$(REMOTE_RECORDER_VERSION)recorder-$$platform -o recorder-$$platform ; \
+		SCREENSHOTBOT_DIR=$$platform/ sh recorder-$$platform ; \
+		rm recorder-$$platform ; \
     done
