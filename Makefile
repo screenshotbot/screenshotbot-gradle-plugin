@@ -6,7 +6,7 @@ LOCAL_REPO=$(shell pwd)/localRepo
 ESCAPED_LOCAL_REPO=$(shell echo $(LOCAL_REPO) | sed 's/\//\\\//g')
 VERSION=$(shell grep '^version ' plugin/build.gradle | cut -d "'" -f 2)
 REMOTE_RECORDER_VERSION=$(shell curl https://screenshotbot.io/recorder-version/current)
-ARTIFACTS=recorder-darwin  recorder-darwin.sig  recorder-linux  recorder-linux-arm64  recorder-linux-arm64.sig  recorder-linux.sig
+PLATFORMS=darwin linux linux-arm64
 
 paparazzi-integration: publish
 	@echo
@@ -55,8 +55,9 @@ integration-tests:
 	ANDROID_HOME=/opt/software/android-sdk $(MAKE) integration-tests-with-env
 
 copy-binaries:
-	for artifact in $(ARTIFACTS) ; do \
+	cd plugin/src/main/resources/io/screenshotbot/gradle && \
+    for platform in $(PLATFORMS) ; do \
         echo Downloading $$artifact ; \
-		echo $(REMOTE_RECORDER_VERSION) > plugin/src/main/resources/io/screenshotbot/gradle/version.txt ; \
-		curl https://screenshotbot.io/artifact/$(REMOTE_RECORDER_VERSION)$$artifact -o plugin/src/main/resources/io/screenshotbot/gradle/$$artifact ; \
+		echo $(REMOTE_RECORDER_VERSION) > version.txt ; \
+		curl https://screenshotbot.io/artifact/$(REMOTE_RECORDER_VERSION)recorder-$$platform -o recorder-$$platform ; \
     done
