@@ -13,7 +13,7 @@ plugins {
 
 
 group 'io.screenshotbot'
-version '1.26'
+version '1.26.2'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -24,6 +24,8 @@ dependencies {
 }
 
 gradlePlugin {
+    website.set("https://screenshotbot.io")
+    vcsUrl.set("https://github.com/screenshotbot/screenshotbot-gradle-plugin")
     plugins {
         screenshotbotPlugin {
             id = 'io.screenshotbot.plugin'
