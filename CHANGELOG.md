@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.27 - 2025-02-13
+
+- Fixes a bug in the task dependencies, that might cause an issue
+  with an error saying that the `recorder` executable was not found.
+
 ## 1.26.4 - 2025-02-11
 
 - No functional changes, but we updated the POM files to point back to
