@@ -101,6 +101,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                         // The CLI tool needs the main branch in order to
                         // fetch commits from the origin.
                         it.setMainBranch(extension.getMainBranch());
+                        it.dependsOn(":downloadScreenshotbotRecorder");
                     });
         }
 
@@ -109,6 +110,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                    it.setGroup("Screenshotbot");
                    it.setDescription("Install Screenshotbot credentials interactively");
                    it.hostname = extension.getHostname();
+                   it.dependsOn(":downloadScreenshotbotRecorder");
                 });
 
 

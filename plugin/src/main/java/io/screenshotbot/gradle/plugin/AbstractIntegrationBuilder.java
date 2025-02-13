@@ -117,6 +117,7 @@ public abstract class AbstractIntegrationBuilder {
                     if (it.mode.equals("ci")) {
                         it.dependsOn(":uploadCommitGraphOnScreenshotbot_" + String.valueOf(extension.getMainBranch()));
                     }
+                    it.dependsOn(":downloadScreenshotbotRecorder");
                     it.doFirst((innerTask) -> {
                     });
                 });
