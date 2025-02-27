@@ -80,6 +80,23 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
         private String mainBranch;
 
+        private String repoUrl;
+
+
+        public String getRepoUrl() {
+            if (repoUrl == null) {
+                for (int i = 0; i < getExtraArgs().size() - 1; i++) {
+                    if (getExtraArgs().get(i).equals("--repo-url")) {
+                        return getExtraArgs().get(i+1);
+                    }
+                }
+            }
+            return repoUrl;
+        }
+
+        public void setRepoUrl(String repoUrl) {
+            this.repoUrl = repoUrl;
+        }
     }
     @Override
     public void apply(Project target) {
