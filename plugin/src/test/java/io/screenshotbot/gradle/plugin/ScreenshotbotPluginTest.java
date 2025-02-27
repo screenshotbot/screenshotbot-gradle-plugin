@@ -50,4 +50,10 @@ class ScreenshotbotPluginTest {
         assertEquals("bar", extension.getRepoUrl());
         assertEquals(List.of("--hello", "bar"), extension.getExtraArgs());
     }
+
+    @Test
+    void doesntRemoveTrailingFlag() {
+        extension.setExtraArgs(List.of("--repo-url"));
+        assertEquals(List.of("--repo-url"), extension.getExtraArgs());
+    }
 }
