@@ -29,4 +29,17 @@ class ScreenshotbotPluginTest {
         extension.setExtraArgs(List.of("--repo-url", "foobar"));
         assertEquals("foobar", extension.getRepoUrl());
     }
+
+    @Test
+    void handlesBadlyFormedCaseWithoutCrashing() {
+        extension.setExtraArgs(List.of("--repo-url"));
+        assertEquals(null, extension.getRepoUrl());
+    }
+
+    @Test
+    void prioritizeRepoUrl() {
+        extension.setRepoUrl("bar");
+        extension.setExtraArgs(List.of("--repo-url", "foobar"));
+        assertEquals("bar", extension.getRepoUrl());
+    }
 }
