@@ -42,4 +42,12 @@ class ScreenshotbotPluginTest {
         extension.setExtraArgs(List.of("--repo-url", "foobar"));
         assertEquals("bar", extension.getRepoUrl());
     }
+
+    @Test
+    void removeRepoUrlFromArgs() {
+        extension.setRepoUrl("bar");
+        extension.setExtraArgs(List.of("--repo-url", "foobar", "--hello", "bar"));
+        assertEquals("bar", extension.getRepoUrl());
+        assertEquals(List.of("--hello", "bar"), extension.getExtraArgs());
+    }
 }
