@@ -29,11 +29,6 @@ public class UploadCommitGraphTask extends BaseRecorderTask {
             it.setExecutable((getExecutable()));
             ArrayList<String> args = getArguments();
 
-
-            // TODO: guess this locally better
-            //args.add("--repo-url");
-            //args.add("dfdfd");
-
             it.setArgs(args);
         });
     }
