@@ -19,6 +19,8 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
 
     public String mainBranch = null;
 
+    public String repoUrl = null;
+
     @Inject
     public UploadScreenshotsTask(ExecOperations execOperations) {
         super(execOperations);
@@ -54,14 +56,19 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
                 args.add(this.batch);
             }
 
-            if (this.mainBranch != null && this.mainBranch.length() > 0) {
-                args.add("--main-branch");
-                args.add(this.mainBranch);
-            }
+            maybeAddArgument(args, "--main-branch", this.mainBranch);
+            maybeAddArgument(args, "--repo-url", this.repoUrl);
 
             args.addAll(extraArgs);
             it.setArgs(args);
         });
+    }
+
+    private void maybeAddArgument(ArrayList<String> args, String param, String value) {
+        if (value != null && value.length() > 0) {
+            args.add(param);
+            args.add(value);
+        }
     }
 
 

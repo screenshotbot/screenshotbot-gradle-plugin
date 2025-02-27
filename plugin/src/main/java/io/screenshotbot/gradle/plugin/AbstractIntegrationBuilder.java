@@ -113,6 +113,7 @@ public abstract class AbstractIntegrationBuilder {
                     it.batch = extension.getBatch();
                     it.mainBranch = extension.getMainBranch();
                     it.extraArgs = extension.getExtraArgs();
+                    it.repoUrl = extension.getRepoUrl();
                     it.mustRunAfter(inputTaskName);
                     if (it.mode.equals("ci")) {
                         it.dependsOn(":uploadCommitGraphOnScreenshotbot_" + String.valueOf(extension.getMainBranch()));
