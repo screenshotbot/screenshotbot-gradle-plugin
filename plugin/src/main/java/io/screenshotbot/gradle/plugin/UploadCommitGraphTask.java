@@ -17,6 +17,7 @@ public class UploadCommitGraphTask extends BaseRecorderTask {
 
     private String mainBranch;
 
+
     @Inject
     public UploadCommitGraphTask(ExecOperations e) {
         super(e);
