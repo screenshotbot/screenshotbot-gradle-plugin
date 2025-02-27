@@ -75,7 +75,14 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         }
 
         public List<String> getExtraArgs() {
-            return this.extraArgs;
+            List<String> copy = new ArrayList<>();
+            copy.addAll(extraArgs);
+            int pos = getRepoUrlPosInExtraArgs();
+            if (pos >= 0) {
+                copy.remove(pos);
+                copy.remove(pos);
+            }
+            return copy;
         }
 
         private String mainBranch;
@@ -85,13 +92,22 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
 
         public String getRepoUrl() {
             if (repoUrl == null) {
-                for (int i = 0; i < getExtraArgs().size() - 1; i++) {
-                    if (getExtraArgs().get(i).equals("--repo-url")) {
-                        return getExtraArgs().get(i+1);
-                    }
+                int x = getRepoUrlPosInExtraArgs();
+                if (x >= 0) {
+                    return extraArgs.get(x + 1);
                 }
             }
             return repoUrl;
+        }
+
+        private int getRepoUrlPosInExtraArgs() {
+            int x = -1;
+            for (int i = 0; i < extraArgs.size() - 1; i++) {
+                if (extraArgs.get(i).equals("--repo-url")) {
+                    x = i;
+                }
+            }
+            return x;
         }
 
         public void setRepoUrl(String repoUrl) {
