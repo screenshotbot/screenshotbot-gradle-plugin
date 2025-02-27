@@ -1,16 +1,32 @@
 # Changelog
 
+## 1.18 - 2025-02-27
+
+### Changed
+
+- Added a repoUrl configuration for the plugin, also updated the plugin to
+  parse `--repo-url` from extraArgs for now. But don't rely on this in the
+  future.
+- Cleaned up this change log to more closely match Common Changelog. Hopefully
+  that means that it will be parsed by Renovate correctly.
+
 ## 1.27 - 2025-02-13
+
+### Changed
 
 - Fixes a bug in the task dependencies, that might cause an issue
   with an error saying that the `recorder` executable was not found.
 
 ## 1.26.4 - 2025-02-11
 
+### Changed
+
 - No functional changes, but we updated the POM files to point back to
   the repository so that it can work with Renovate
 
 ## 1.26.2 - 2025-02-11
+
+### Changed
 
 - No changes, only testing deployment
 
