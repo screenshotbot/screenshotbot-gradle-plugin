@@ -118,6 +118,7 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
                         // The CLI tool needs the main branch in order to
                         // fetch commits from the origin.
                         it.setMainBranch(extension.getMainBranch());
+                        it.setRepoUrl(extension.getRepoUrl());
                         it.dependsOn(":downloadScreenshotbotRecorder");
                     });
         }
