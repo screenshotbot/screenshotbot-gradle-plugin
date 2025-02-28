@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.28.2 - 2025-02-28
+
+### Changed
+
+- 1.28 had a bug that caused the task to fail on the CI step, this fixes it.
+
 ## 1.28 - 2025-02-27
 
 ### Changed
