@@ -33,9 +33,8 @@ public class UploadCommitGraphTask extends BaseRecorderTask {
         });
     }
 
-    @NotNull
-    @VisibleForTesting
-    ArrayList<String> getArguments() {
+
+    private ArrayList<String> getArguments() {
         ArrayList<String> args = new ArrayList<>();
         args.add("ci");
         args.add("upload-commit-graph");
