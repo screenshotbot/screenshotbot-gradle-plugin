@@ -16,23 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 // AbstractTestTask
 @Ignore
 class UploadCommitGraphTaskTest   {
-    private UploadCommitGraphTask task;
 
-    @BeforeEach
-    public void setUp() {
-        this.task = new UploadCommitGraphTask(null);
-    }
-
-    //@Test
-    public void getArguments() {
-        assertEquals(new ArrayList<>(), task.getArguments());
-    }
-
-    // @Test
-    public void withRepoUrl() {
-        task.setRepoUrl("foobar");
-        assertEquals(List.of("--repo-url", "foobar"),
-                task.getArguments());
-    }
 
 }
