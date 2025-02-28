@@ -19,7 +19,7 @@ paparazzi-integration: publish
 
 	$(MAKE) update-other-repo
 
-
+	cd $(OTHER) && ./gradlew --stacktrace recordAndVerifyPaparazziDebugScreenshotbotCI
 	cd $(OTHER) && ./gradlew --stacktrace  :sample:recordPaparazziDebugScreenshotbot
 	cd $(OTHER) && ./gradlew --stacktrace :sample:verifyPaparazziDebugScreenshotbot
 
