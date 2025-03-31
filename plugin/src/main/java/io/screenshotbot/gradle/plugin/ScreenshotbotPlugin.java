@@ -126,18 +126,6 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         new ComposePreviewsIntegrationBuilder(extension).apply(target);
 
 
-        String uploadCommitGraphOnScreenshotbot = "uploadCommitGraphOnScreenshotbot_" +
-                String.valueOf(extension.getMainBranch());
-        if (target.getRootProject().getTasks().findByName(uploadCommitGraphOnScreenshotbot) == null) {
-            target.getRootProject().getTasks().register(uploadCommitGraphOnScreenshotbot, UploadCommitGraphTask.class)
-                    .configure((it) -> {
-                        // The CLI tool needs the main branch in order to
-                        // fetch commits from the origin.
-                        it.setMainBranch(extension.getMainBranch());
-                        it.setRepoUrl(extension.getRepoUrl());
-                        it.dependsOn(":downloadScreenshotbotRecorder");
-                    });
-        }
 
         target.getTasks().register("installScreenshotbot", InstallScreenshotbotTask.class)
                 .configure((it) -> {
