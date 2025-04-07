@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.29.0 - 2025-04-07
+
+### Changed
+
+- In a previous version, we moved the updateCommitGraph step to the
+  root gradle module, intended to be an optimization. This caused a
+  bunch of bugs, including not respecting api_hostname in certain
+  situations. We undid this change, to simplify the logic and make the
+  gradle plugin more robust.
+
 ## 1.28.2 - 2025-02-28
 
 ### Changed
