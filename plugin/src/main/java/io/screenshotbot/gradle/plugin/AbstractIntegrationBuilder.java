@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
@@ -85,7 +87,7 @@ public abstract class AbstractIntegrationBuilder {
         String backupSnapshots = taskName + "BackupSnapshots";
         String restoreSnapshots = taskName + "RestoreSnapshots";
         String uploadSnapshots = taskName + "UploadSnapshots";
-        Directory snapshotsDir = getSnapshotsDir(project, inputTask);
+        List<Directory> snapshotsDirList = getSnapshotsDirList(project, inputTask);
 
         String inputTaskName = inputTask.getName();
         String channelName = project.getPath();
@@ -107,14 +109,17 @@ public abstract class AbstractIntegrationBuilder {
         tasks.register(backupSnapshots).configure((it) -> {
             configureBackupSnapshotsDependencies(it, inputTaskName);
             it.doFirst((it2) -> {
-                backupDir(snapshotsDir);
+                for (var dir : snapshotsDirList) {
+                    backupDir(dir);
+                }
             });
         });
 
 
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                 .configure((it) -> {
-                    File imagesDirectory = getImagesDirectory(snapshotsDir.getAsFile());
+                    File snapshotsDir = getOnlyExistingDir(snapshotsDirList);
+                    File imagesDirectory = getImagesDirectory(snapshotsDir);
                     it.directory = imagesDirectory;
                     it.channel = extension.getChannelPrefix() + channelName;
                     it.mode = mode;
@@ -133,9 +138,30 @@ public abstract class AbstractIntegrationBuilder {
                 .configure((it) -> {
                     it.mustRunAfter(uploadSnapshots);
                     it.doFirst((innerTask) -> {
-                        restoreDir(snapshotsDir);
+                        for (var dir : snapshotsDirList) {
+                            restoreDir(dir);
+                        }
                     });
                 });
+    }
+
+    private File getOnlyExistingDir(List<Directory> snapshotsDirList) {
+        List<File> exists = new ArrayList<>();
+        for (var dir : snapshotsDirList) {
+            if (dir.getAsFile().exists()) {
+                exists.add(dir.getAsFile());
+            }
+        }
+
+        if (exists.size() > 1) {
+            throw new IllegalStateException("Too many snapshot directories created, this is a bug in the screenshotbot plugin");
+        }
+
+        if (exists.size() == 0) {
+            throw new IllegalStateException("No snapshot directories were created, this might be a bug in the screenshotbot plugin");
+        }
+
+        return exists.get(0);
     }
 
     protected void configureBackupSnapshotsDependencies(Task it, String taskName) {
@@ -190,6 +216,10 @@ public abstract class AbstractIntegrationBuilder {
 
     @NotNull
     protected abstract Directory getSnapshotsDir(Project project, Task task);
+
+    protected List<Directory> getSnapshotsDirList(Project project, Task task) {
+        return List.of(getSnapshotsDir(project, task));
+    }
 
     public String upcaseFirst(String str) {
         if (str.equals("")) {
