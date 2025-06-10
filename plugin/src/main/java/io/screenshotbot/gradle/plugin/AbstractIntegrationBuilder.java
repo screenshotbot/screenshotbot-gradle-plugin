@@ -1,6 +1,5 @@
 package io.screenshotbot.gradle.plugin;
 
-import org.apache.tools.ant.util.ResourceUtils;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -13,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
@@ -33,6 +31,9 @@ public abstract class AbstractIntegrationBuilder {
     protected void restoreDir(Directory snapshotsDir) {
         String backupDir = snapshotsDir.getAsFile().toString() + "-screenshotbot-backup";
 
+        if (!snapshotsDir.getAsFile().exists()) {
+            throwDirectoryDoesNotExist(snapshotsDir.getAsFile());
+        }
         deleteDirectory(snapshotsDir.getAsFile());
 
         if (new File(backupDir).exists()) {
@@ -42,6 +43,14 @@ public abstract class AbstractIntegrationBuilder {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    /*
+     * For specific plugins, we might have to show a warning if we could not correctly guess the output directory
+     * screenshots.
+     */
+    private void throwDirectoryDoesNotExist(File snapshotsDir) {
+        throw new RuntimeException("The snapshots dir (" + snapshotsDir.toString() + ") was not created. This could be a bug in Screenshotbot Gradle plugin.");
     }
 
     private void deleteDirectory(File asFile) {
@@ -134,6 +143,7 @@ public abstract class AbstractIntegrationBuilder {
 
     protected void configureTaskDependencies(RecordPaparazziTask it, String sourceTask) {
     }
+
 
     public void apply(Project project) {
         Action<Plugin> action = new Action<Plugin>() {
