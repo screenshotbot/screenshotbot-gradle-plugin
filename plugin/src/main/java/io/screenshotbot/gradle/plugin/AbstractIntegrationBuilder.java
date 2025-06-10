@@ -147,10 +147,12 @@ public abstract class AbstractIntegrationBuilder {
 
     private File getOnlyExistingDir(List<Directory> snapshotsDirList) {
         List<File> exists = new ArrayList<>();
+        List<String> asStrings = new ArrayList<>(); // for debugging
         for (var dir : snapshotsDirList) {
             if (dir.getAsFile().exists()) {
                 exists.add(dir.getAsFile());
             }
+            asStrings.add(dir.toString());
         }
 
         if (exists.size() > 1) {
@@ -158,7 +160,8 @@ public abstract class AbstractIntegrationBuilder {
         }
 
         if (exists.size() == 0) {
-            throw new IllegalStateException("No snapshot directories were created, this might be a bug in the screenshotbot plugin");
+            throw new IllegalStateException("No snapshot directories were created, this might be a bug in the screenshotbot plugin: " +
+                                            String.join(", ", asStrings));
         }
 
         return exists.get(0);
