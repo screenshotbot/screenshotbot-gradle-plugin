@@ -58,8 +58,8 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
     }
 
     @Override
-    public File getImagesDirectory(Project project, Task task) {
-        return getSnapshotsDir(project, task).dir("screenshots-default").getAsFile();
+    public File getImagesDirectory(File snapshotsDir) {
+        return new File(snapshotsDir, "screenshots-default");
     }
 
     @Override

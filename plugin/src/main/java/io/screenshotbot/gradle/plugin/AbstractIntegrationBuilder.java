@@ -89,7 +89,7 @@ public abstract class AbstractIntegrationBuilder {
 
         String inputTaskName = inputTask.getName();
         String channelName = project.getPath();
-        File imagesDirectory = getImagesDirectory(project, inputTask);
+        File imagesDirectory = getImagesDirectory(getSnapshotsDir(project, inputTask).getAsFile());
 
         inputTask.mustRunAfter(backupSnapshots);
         tasks.register(taskName,
@@ -178,8 +178,8 @@ public abstract class AbstractIntegrationBuilder {
      * snapshots dir is the directory we're backing up, but the images directory is snapshots-dir/images.
      */
     @NotNull
-    public File getImagesDirectory(Project project, Task task) {
-        return getSnapshotsDir(project, task).getAsFile();
+    public File getImagesDirectory(File snapshotsDir) {
+        return snapshotsDir;
     }
 
     @NotNull
