@@ -89,7 +89,6 @@ public abstract class AbstractIntegrationBuilder {
 
         String inputTaskName = inputTask.getName();
         String channelName = project.getPath();
-        File imagesDirectory = getImagesDirectory(getSnapshotsDir(project, inputTask).getAsFile());
 
         inputTask.mustRunAfter(backupSnapshots);
         tasks.register(taskName,
@@ -115,6 +114,7 @@ public abstract class AbstractIntegrationBuilder {
 
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                 .configure((it) -> {
+                    File imagesDirectory = getImagesDirectory(snapshotsDir.getAsFile());
                     it.directory = imagesDirectory;
                     it.channel = extension.getChannelPrefix() + channelName;
                     it.mode = mode;
