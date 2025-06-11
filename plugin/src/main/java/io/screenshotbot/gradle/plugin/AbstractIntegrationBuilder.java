@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 
@@ -85,7 +87,11 @@ public abstract class AbstractIntegrationBuilder {
         String backupSnapshots = taskName + "BackupSnapshots";
         String restoreSnapshots = taskName + "RestoreSnapshots";
         String uploadSnapshots = taskName + "UploadSnapshots";
-        Directory snapshotsDir = getSnapshotsDir(project, inputTask);
+        List<Directory> snapshotsDirList = getSnapshotsDirList(project, inputTask);
+        List<File> imageDirList = new ArrayList<>();
+        for (Directory snapshotDir : snapshotsDirList) {
+            imageDirList.add(getImagesDirectory(snapshotDir.getAsFile()));
+        }
 
         String inputTaskName = inputTask.getName();
         String channelName = project.getPath();
@@ -107,15 +113,17 @@ public abstract class AbstractIntegrationBuilder {
         tasks.register(backupSnapshots).configure((it) -> {
             configureBackupSnapshotsDependencies(it, inputTaskName);
             it.doFirst((it2) -> {
-                backupDir(snapshotsDir);
+                for (var dir : snapshotsDirList) {
+                    backupDir(dir);
+                }
             });
         });
 
 
+
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                 .configure((it) -> {
-                    File imagesDirectory = getImagesDirectory(snapshotsDir.getAsFile());
-                    it.directory = imagesDirectory;
+                    it.directory = imageDirList;
                     it.channel = extension.getChannelPrefix() + channelName;
                     it.mode = mode;
                     it.hostname = extension.getHostname();
@@ -133,7 +141,9 @@ public abstract class AbstractIntegrationBuilder {
                 .configure((it) -> {
                     it.mustRunAfter(uploadSnapshots);
                     it.doFirst((innerTask) -> {
-                        restoreDir(snapshotsDir);
+                        for (var dir : snapshotsDirList) {
+                            restoreDir(dir);
+                        }
                     });
                 });
     }
@@ -190,6 +200,10 @@ public abstract class AbstractIntegrationBuilder {
 
     @NotNull
     protected abstract Directory getSnapshotsDir(Project project, Task task);
+
+    protected List<Directory> getSnapshotsDirList(Project project, Task task) {
+        return List.of(getSnapshotsDir(project, task));
+    }
 
     public String upcaseFirst(String str) {
         if (str.equals("")) {
