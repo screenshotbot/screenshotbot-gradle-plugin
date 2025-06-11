@@ -88,6 +88,10 @@ public abstract class AbstractIntegrationBuilder {
         String restoreSnapshots = taskName + "RestoreSnapshots";
         String uploadSnapshots = taskName + "UploadSnapshots";
         List<Directory> snapshotsDirList = getSnapshotsDirList(project, inputTask);
+        List<File> imageDirList = new ArrayList<>();
+        for (Directory snapshotDir : snapshotsDirList) {
+            imageDirList.add(getImagesDirectory(snapshotDir.getAsFile()));
+        }
 
         String inputTaskName = inputTask.getName();
         String channelName = project.getPath();
@@ -116,11 +120,10 @@ public abstract class AbstractIntegrationBuilder {
         });
 
 
+
         tasks.register(uploadSnapshots, UploadScreenshotsTask.class)
                 .configure((it) -> {
-                    File snapshotsDir = getOnlyExistingDir(snapshotsDirList);
-                    File imagesDirectory = getImagesDirectory(snapshotsDir);
-                    it.directory = imagesDirectory;
+                    it.directory = imageDirList;
                     it.channel = extension.getChannelPrefix() + channelName;
                     it.mode = mode;
                     it.hostname = extension.getHostname();
@@ -143,28 +146,6 @@ public abstract class AbstractIntegrationBuilder {
                         }
                     });
                 });
-    }
-
-    private File getOnlyExistingDir(List<Directory> snapshotsDirList) {
-        List<File> exists = new ArrayList<>();
-        List<String> asStrings = new ArrayList<>(); // for debugging
-        for (var dir : snapshotsDirList) {
-            if (dir.getAsFile().exists()) {
-                exists.add(dir.getAsFile());
-            }
-            asStrings.add(dir.toString());
-        }
-
-        if (exists.size() > 1) {
-            throw new IllegalStateException("Too many snapshot directories created, this is a bug in the screenshotbot plugin");
-        }
-
-        if (exists.size() == 0) {
-            throw new IllegalStateException("No snapshot directories were created, this might be a bug in the screenshotbot plugin: " +
-                                            String.join(", ", asStrings));
-        }
-
-        return exists.get(0);
     }
 
     protected void configureBackupSnapshotsDependencies(Task it, String taskName) {
