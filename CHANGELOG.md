@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.29.2 - 2025-06-10
+
+### Changed
+
+- Fixed support for Compose Preview Screenshot Tests,
+  0.0.1-alpha10. alpha10 changed a directory location which would
+  cause this plugin to crash.
+
 ## 1.29.0 - 2025-04-07
 
 ### Changed
