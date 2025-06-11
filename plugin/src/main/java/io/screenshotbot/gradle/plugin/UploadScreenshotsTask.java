@@ -10,7 +10,7 @@ import org.gradle.process.*;
 
 
 public class UploadScreenshotsTask extends BaseRecorderTask {
-    public File directory = null;
+    public List<File> directory = null;
     public String channel = null;
     public String mode = "record";
     public String batch = null;
@@ -47,7 +47,7 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
             args.add("--channel");
             args.add(channel);
             args.add("--directory");
-            args.add(directory.toString());
+            args.add(getOnlyExistingDir(directory).toString());
 
             if (this.batch != null && this.batch.length() > 0 && mode.equals("ci")) {
                 args.add("--batch");
