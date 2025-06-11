@@ -54,7 +54,9 @@ public class ComposePreviewsIntegrationBuilder extends AbstractIntegrationBuilde
     @Override
     protected List<Directory> getSnapshotsDirList(Project project, Task task) {
         return List.of(
+                // this is for < 0.0.1-alpha10
                 project.getLayout().getProjectDirectory().dir("src/"  + getVariant(task) + "/screenshotTest/reference"),
+                // this is for >= 0.0.1-alpha10
                 project.getLayout().getProjectDirectory().dir("src/screenshotTest" + getVariant(task) + "/reference"));
     }
 
