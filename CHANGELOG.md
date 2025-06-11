@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.29.4 - 2025-06-10
+
+### Changed
+
+- Fixed crash in previous version when used with Compose Preview
+  Screenshot Tests.
+
+
 ## 1.29.3 - 2025-06-10
 
 ### Changed
