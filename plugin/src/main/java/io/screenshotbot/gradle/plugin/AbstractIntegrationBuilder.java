@@ -33,10 +33,9 @@ public abstract class AbstractIntegrationBuilder {
     protected void restoreDir(Directory snapshotsDir) {
         String backupDir = snapshotsDir.getAsFile().toString() + "-screenshotbot-backup";
 
-        if (!snapshotsDir.getAsFile().exists()) {
-            throwDirectoryDoesNotExist(snapshotsDir.getAsFile());
+        if (snapshotsDir.getAsFile().exists()) {
+            deleteDirectory(snapshotsDir.getAsFile());
         }
-        deleteDirectory(snapshotsDir.getAsFile());
 
         if (new File(backupDir).exists()) {
             try {
@@ -47,13 +46,6 @@ public abstract class AbstractIntegrationBuilder {
         }
     }
 
-    /*
-     * For specific plugins, we might have to show a warning if we could not correctly guess the output directory
-     * screenshots.
-     */
-    private void throwDirectoryDoesNotExist(File snapshotsDir) {
-        throw new RuntimeException("The snapshots dir (" + snapshotsDir.toString() + ") was not created. This could be a bug in Screenshotbot Gradle plugin.");
-    }
 
     private void deleteDirectory(File asFile) {
         for (File file : asFile.listFiles()) {
