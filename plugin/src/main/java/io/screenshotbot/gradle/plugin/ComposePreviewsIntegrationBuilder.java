@@ -57,7 +57,7 @@ public class ComposePreviewsIntegrationBuilder extends AbstractIntegrationBuilde
                 // this is for < 0.0.1-alpha10
                 project.getLayout().getProjectDirectory().dir("src/"  + getVariant(task) + "/screenshotTest/reference"),
                 // this is for >= 0.0.1-alpha10
-                project.getLayout().getProjectDirectory().dir("src/screenshotTest" + getVariant(task) + "/reference"));
+                project.getLayout().getProjectDirectory().dir("src/screenshotTest" + upcaseFirst(getVariant(task)) + "/reference"));
     }
 
     private String getVariant(Task task) {
