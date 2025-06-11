@@ -5,6 +5,8 @@ import org.gradle.api.Task;
 import org.gradle.api.file.Directory;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class ComposePreviewsIntegrationBuilder extends AbstractIntegrationBuilder {
 
     public static final String PREFIX = "update";
@@ -45,7 +47,15 @@ public class ComposePreviewsIntegrationBuilder extends AbstractIntegrationBuilde
 
     @Override
     protected @NotNull Directory getSnapshotsDir(Project project, Task task) {
-        return project.getLayout().getProjectDirectory().dir("src/"  + getVariant(task) + "/screenshotTest/reference");
+        throw new IllegalStateException("should not be called");
+
+    }
+
+    @Override
+    protected List<Directory> getSnapshotsDirList(Project project, Task task) {
+        return List.of(
+                project.getLayout().getProjectDirectory().dir("src/"  + getVariant(task) + "/screenshotTest/reference"),
+                project.getLayout().getProjectDirectory().dir("src/screenshotTest" + getVariant(task) + "/reference"));
     }
 
     private String getVariant(Task task) {
