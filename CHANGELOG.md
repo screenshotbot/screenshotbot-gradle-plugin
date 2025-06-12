@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.29.5 - 2025-06-12
+
+### Changed
+
+- Support modules that don't actually have screenshot tests, this
+  makes CI configurations a lot easier in multi-module setups. (See
+  GitHub #3).
+
+
 ## 1.29.4 - 2025-06-10
 
 ### Changed
