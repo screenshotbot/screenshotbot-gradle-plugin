@@ -42,14 +42,14 @@ cpst-integration: publish
 	@echo CPST:
 	@echo
 	rm -rf $(OTHER)
-	git clone https://github.com/screenshotbot/compose-preview-example.git $(OTHER)
+	git clone -b app-without-screenshots https://github.com/screenshotbot/compose-preview-example.git $(OTHER)
 
 	$(MAKE) update-other-repo
 
 	cd $(OTHER) && ./gradlew --stacktrace recordAndVerifyDebugScreenshotTest
 
 fix-version:
-	cd $(OTHER) && if test -f */build.gradle.kts ; then \
+	cd $(OTHER) && if test -f build.gradle.kts ; then \
         echo using kotlin gradle files ; \
 		sed -i 's/id[(]"io.screenshotbot.plugin[)] version '.*'/id ("io.screenshotbot.plugin") version "$(VERSION)"/' */build.gradle.kts ; \
     else \
