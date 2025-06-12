@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.29.6 - 2025-06-12
+
+### Changed
+
+- Fixed small bug from typo in previous release. 
+
 ## 1.29.5 - 2025-06-12
 
 ### Changed
