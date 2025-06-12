@@ -2,20 +2,39 @@ package io.screenshotbot.gradle.plugin;
 
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.process.ExecOperations;
-import org.gradle.wrapper.Download;
 
 import javax.inject.Inject;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DownloadRecorderTask extends BaseRecorderTask {
 
     @Inject
     public DownloadRecorderTask(ExecOperations e) {
         super(e);
+    }
+
+    public static File getOnlyExistingDir(List<File> snapshotsDirList) {
+        List<File> exists = new ArrayList<>();
+        List<String> asStrings = new ArrayList<>(); // for debugging
+        for (var dir : snapshotsDirList) {
+            if (dir.exists()) {
+                exists.add(dir);
+            }
+            asStrings.add(dir.toString());
+        }
+
+        if (exists.size() > 1) {
+            throw new IllegalStateException("Too many snapshot directories created, this is a bug in the screenshotbot plugin");
+        }
+
+        if (exists.size() == 0) {
+            throw new IllegalStateException("No snapshot directories were created, this might be a bug in the screenshotbot plugin: " +
+                                            String.join(", ", asStrings));
+        }
+
+        return exists.get(0);
     }
 
     @TaskAction

@@ -10,7 +10,7 @@ import org.gradle.process.*;
 
 
 public class UploadScreenshotsTask extends BaseRecorderTask {
-    public List<File> directory = null;
+    public List<File> possibleDirectories = null;
     public String channel = null;
     public String mode = "record";
     public String batch = null;
@@ -27,14 +27,42 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
         dependsOn(":downloadScreenshotbotRecorder");
     }
 
+    public static File getOnlyExistingDir(List<File> snapshotsDirList) {
+        List<File> exists = new ArrayList<>();
+        List<String> asStrings = new ArrayList<>(); // for debugging
+        for (var dir : snapshotsDirList) {
+            if (dir.exists()) {
+                exists.add(dir);
+            }
+            asStrings.add(dir.toString());
+        }
+
+        if (exists.size() > 1) {
+            throw new IllegalStateException("Too many snapshot directories created, this is a bug in the screenshotbot plugin");
+        }
+
+        if (exists.size() == 0) {
+            throw null;
+        }
+
+        return exists.get(0);
+    }
+
     @TaskAction
     public void uploadScreenshots() {
         uploadChannel();
-        System.out.println("Uploading: " + directory + " " + channel);
+        System.out.println("Uploading: " + possibleDirectories + " " + channel);
     }
 
     public void uploadChannel() {
         execOperations.exec((it) -> {
+            File snapshotDir = getOnlyExistingDir(possibleDirectories);
+
+            if (snapshotDir == null) {
+                getLogger().warn("No screenshots were generated in this module");
+                return;
+            }
+
             it.setExecutable(getExecutable());
             ArrayList<String> args = prepareArgs();
 
@@ -47,7 +75,7 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
             args.add("--channel");
             args.add(channel);
             args.add("--directory");
-            args.add(getOnlyExistingDir(directory).toString());
+            args.add(snapshotDir.toString());
 
             if (this.batch != null && this.batch.length() > 0 && mode.equals("ci")) {
                 args.add("--batch");
