@@ -51,7 +51,7 @@ cpst-integration: publish
 fix-version:
 	cd $(OTHER) && if test -f build.gradle.kts ; then \
         echo using kotlin gradle files ; \
-		sed -i 's/id[(]"io.screenshotbot.plugin[)] version '.*'/id ("io.screenshotbot.plugin") version "$(VERSION)"/' */build.gradle.kts ; \
+		sed -i 's/id("io.screenshotbot.plugin") version '.*'/id("io.screenshotbot.plugin") version "$(VERSION)"/' */build.gradle.kts ; \
     else \
 		echo using groovy gradle files ; \
 		sed -i "s/id 'io.screenshotbot.plugin' version '.*'/id 'io.screenshotbot.plugin' version '$(VERSION)'/" *.gradle */build.gradle ; \
