@@ -55,14 +55,12 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
     }
 
     public void uploadChannel() {
+        File snapshotDir = getOnlyExistingDir(possibleDirectories);
+        if (snapshotDir == null) {
+            getLogger().warn("No screenshots were generated in this module");
+            return;
+        }
         execOperations.exec((it) -> {
-            File snapshotDir = getOnlyExistingDir(possibleDirectories);
-
-            if (snapshotDir == null) {
-                getLogger().warn("No screenshots were generated in this module");
-                return;
-            }
-
             it.setExecutable(getExecutable());
             ArrayList<String> args = prepareArgs();
 
