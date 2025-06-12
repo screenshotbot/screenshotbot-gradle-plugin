@@ -42,7 +42,7 @@ public class UploadScreenshotsTask extends BaseRecorderTask {
         }
 
         if (exists.size() == 0) {
-            throw null;
+            return null;
         }
 
         return exists.get(0);
