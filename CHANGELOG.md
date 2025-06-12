@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.29.8 - 2025-06-12
+
+### Changed
+
+- Fixed bug in previous two releases. Added a better integration test
+  to ensure we truly fixed things this time.
+
 ## 1.29.6 - 2025-06-12
 
 ### Changed
