@@ -8,6 +8,7 @@ VERSION=$(shell grep '^version ' plugin/build.gradle | cut -d "'" -f 2)
 # REMOTE_RECORDER_VERSION=$(shell curl https://screenshotbot.io/recorder-version/current)
 REMOTE_RECORDER_VERSION=releases/2.11.0/
 PLATFORMS=darwin linux linux-arm64
+SHELL:=/bin/bash
 
 paparazzi-integration: publish
 	@echo
@@ -36,21 +37,39 @@ roborazzi-integration: publish
 	cd $(OTHER) && ./gradlew :sample-android:recordRoborazziDebugScreenshotbot
 	cd $(OTHER) && ./gradlew :sample-android:verifyRoborazziDebugScreenshotbot
 
+cpst-integration: publish
+	@echo
+	@echo CPST:
+	@echo
+	rm -rf $(OTHER)
+	git clone https://github.com/screenshotbot/compose-preview-example.git $(OTHER)
+
+	$(MAKE) update-other-repo
+
+	cd $(OTHER) && ./gradlew --stacktrace recordAndVerifyDebugScreenshotTest
+
 fix-version:
-	cd $(OTHER) && sed -i "s/id 'io.screenshotbot.plugin' version '.*'/id 'io.screenshotbot.plugin' version '$(VERSION)'/" *.gradle */build.gradle
-	cd $(OTHER) && sed -i "s#/home/arnold/builds/screenshotbot-gradle/localRepo#$(shell pwd)/localRepo#g" *.gradle */build.gradle
+	cd $(OTHER) && if test -f */build.gradle.kts ; then \
+        echo using kotlin gradle files ; \
+		sed -i 's/id[(]"io.screenshotbot.plugin[)] version '.*'/id ("io.screenshotbot.plugin") version "$(VERSION)"/' */build.gradle.kts ; \
+    else \
+		echo using groovy gradle files ; \
+		sed -i "s/id 'io.screenshotbot.plugin' version '.*'/id 'io.screenshotbot.plugin' version '$(VERSION)'/" *.gradle */build.gradle ; \
+    fi
+	shopt -s nullglob ; cd $(OTHER) && sed -i "s#/home/arnold/builds/screenshotbot-gradle/localRepo#$(shell pwd)/localRepo#g" *.gradle */build.gradle */build.gradle.kts
+
 	cd $(OTHER) && ( cat *.gradle */build.gradle || true )
 
 update-other-repo: fix-version update-maven-local
 
 update-maven-local:
 	echo $(ESCAPED_LOCAL_REPO)
-	sed -i 's/home\/arnold\/myLocal/$(ESCAPED_LOCAL_REPO)/' $(OTHER)/settings.gradle
+	shopt -s nullglob ;	sed -i 's/home\/arnold\/myLocal/$(ESCAPED_LOCAL_REPO)/' $(OTHER)/settings.gradle*
 
 publish: .PHONY
 	./gradlew :plugin:publish
 
-integration-tests-with-env: | publish paparazzi-integration roborazzi-integration
+integration-tests-with-env: | publish paparazzi-integration roborazzi-integration cpst-integration
 
 integration-tests:
 	ANDROID_HOME=/opt/software/android-sdk $(MAKE) integration-tests-with-env
