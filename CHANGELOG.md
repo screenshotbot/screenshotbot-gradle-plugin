@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.29.10 - 2025-06-16
+
+### Changed
+
+- Fixed a configuration-cache issue that showed up in 1.29.2.
+
 ## 1.29.8 - 2025-06-12
 
 ### Changed
