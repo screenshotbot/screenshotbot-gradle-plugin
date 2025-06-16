@@ -21,7 +21,7 @@ Including the plugin is pretty straightforward. In your
 
 ```
 plugins {
-  id 'io.screenshotbot.plugin' version '1.29.8'
+  id 'io.screenshotbot.plugin' version '1.29.10'
 }
 ```
 
