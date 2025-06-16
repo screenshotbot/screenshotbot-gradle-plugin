@@ -79,7 +79,10 @@ public abstract class AbstractIntegrationBuilder {
         String backupSnapshots = taskName + "BackupSnapshots";
         String restoreSnapshots = taskName + "RestoreSnapshots";
         String uploadSnapshots = taskName + "UploadSnapshots";
-        List<Directory> snapshotsDirList = getSnapshotsDirList(project, inputTask);
+
+        // List.of(...) will return a list that is not serializable
+        List<Directory> snapshotsDirList = new ArrayList<>(getSnapshotsDirList(project, inputTask));
+        
         List<File> imageDirList = new ArrayList<>();
         for (Directory snapshotDir : snapshotsDirList) {
             imageDirList.add(getImagesDirectory(snapshotDir.getAsFile()));
