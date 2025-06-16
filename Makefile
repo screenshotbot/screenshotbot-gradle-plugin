@@ -46,7 +46,7 @@ cpst-integration: publish
 
 	$(MAKE) update-other-repo
 
-	cd $(OTHER) && ./gradlew --stacktrace recordAndVerifyDebugScreenshotTest
+	cd $(OTHER) && ./gradlew --configuration-cache --stacktrace recordAndVerifyDebugScreenshotTest
 
 fix-version:
 	cd $(OTHER) && if test -f build.gradle.kts ; then \
