@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.28.11 - 2026-01-17
+
+### Changed
+
+- Switched plugin name for com.facebook to io.screenshotbot (See
+  https://screenshotbot.io/blog/screenshot-tests-for-android-is-now-maintained-by-screenshotbot )
+
 ## 1.29.10 - 2025-06-16
 
 ### Changed
