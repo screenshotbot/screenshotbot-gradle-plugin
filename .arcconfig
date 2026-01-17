@@ -1,4 +1,5 @@
 {
    "phabricator.uri": "https://phabricator.tdrhq.com",
-   "repository.callsign": "SG"
+   "repository.callsign": "SG",
+   "arc.land.onto": ["main"]
 }
