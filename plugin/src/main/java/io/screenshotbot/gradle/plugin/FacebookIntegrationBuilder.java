@@ -19,7 +19,7 @@ public class FacebookIntegrationBuilder extends AbstractIntegrationBuilder {
 
     @Override
     protected @NotNull String getPluginId() {
-        return "com.facebook.testing.screenshot";
+        return "io.screenshotbot.screenshot-tests-for-android";
     }
 
     @Override
