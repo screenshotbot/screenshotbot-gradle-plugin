@@ -6,7 +6,7 @@ LOCAL_REPO=$(shell pwd)/localRepo
 ESCAPED_LOCAL_REPO=$(shell echo $(LOCAL_REPO) | sed 's/\//\\\//g')
 VERSION=$(shell grep '^version ' plugin/build.gradle | cut -d "'" -f 2)
 # REMOTE_RECORDER_VERSION=$(shell curl https://screenshotbot.io/recorder-version/current)
-REMOTE_RECORDER_VERSION=releases/2.11.0/
+REMOTE_RECORDER_VERSION=releases/2.18.15/
 PLATFORMS=darwin linux linux-arm64
 SHELL:=/bin/bash
 
@@ -90,9 +90,14 @@ copy-binaries:
     for platform in $(PLATFORMS) ; do \
         echo Downloading $$artifact ; \
 		echo $(REMOTE_RECORDER_VERSION) > version.txt ; \
-		curl https://screenshotbot.io/artifact/$(REMOTE_RECORDER_VERSION)recorder-$$platform -o recorder-$$platform ; \
+		URL=https://screenshotbot.io/artifact/$(REMOTE_RECORDER_VERSION)recorder-$$platform-without-installer.tar.gz ; \
+        echo url is $$URL ; \
+		curl $$URL -o recorder-$$platform.tar.gz ; \
+        file recorder-$$platform.tar.gz ; \
 		export SCREENSHOTBOT_DIR=$$PWD/$$platform/ ; \
-		mkdir -p $SCREENSHOTBOT_DIR ; \
-        sh recorder-$$platform ; \
-		rm recorder-$$platform ; \
+		mkdir -p $$SCREENSHOTBOT_DIR ; \
+		cd $$platform ; \
+	    tar xvzf ../recorder-$$platform.tar.gz  ; \
+		cd .. ; \
+        rm recorder-$$platform.tar.gz ; \
     done
