@@ -10,6 +10,17 @@ REMOTE_RECORDER_VERSION=releases/2.11.0/
 PLATFORMS=darwin linux linux-arm64
 SHELL:=/bin/bash
 
+# Gradle auto-detects JDKs in /usr/lib/jvm and friends, but not in
+# /opt/software, so anything installed there is invisible to it. Roborazzi's
+# included build (:include-build:roborazzi-gradle-plugin) requests a
+# languageVersion=17 toolchain while the builders' detected JDK is 21, which
+# fails with "Cannot find a Java installation on your machine ... matching
+# {languageVersion=17}". Point Gradle at whatever 17 is installed rather than
+# hardcoding a version, so a JDK upgrade under /opt/software doesn't break this.
+JDK_PATHS=$(shell ls -d /opt/software/jdk-17* 2>/dev/null | paste -sd, -)
+GRADLE_JDK_ARGS=$(if $(JDK_PATHS),-Porg.gradle.java.installations.paths=$(JDK_PATHS),)
+GRADLEW=./gradlew $(GRADLE_JDK_ARGS)
+
 paparazzi-integration: publish
 	@echo
 	@echo PAPARAZZI
@@ -20,9 +31,9 @@ paparazzi-integration: publish
 
 	$(MAKE) update-other-repo
 
-	cd $(OTHER) && ./gradlew --stacktrace recordAndVerifyPaparazziDebugScreenshotbotCI
-	cd $(OTHER) && ./gradlew --stacktrace  :sample:recordPaparazziDebugScreenshotbot
-	cd $(OTHER) && ./gradlew --stacktrace :sample:verifyPaparazziDebugScreenshotbot
+	cd $(OTHER) && $(GRADLEW) --stacktrace recordAndVerifyPaparazziDebugScreenshotbotCI
+	cd $(OTHER) && $(GRADLEW) --stacktrace  :sample:recordPaparazziDebugScreenshotbot
+	cd $(OTHER) && $(GRADLEW) --stacktrace :sample:verifyPaparazziDebugScreenshotbot
 
 roborazzi-integration: publish
 	@echo
@@ -34,8 +45,8 @@ roborazzi-integration: publish
 	$(MAKE) update-other-repo
 
 
-	cd $(OTHER) && ./gradlew :sample-android:recordRoborazziDebugScreenshotbot
-	cd $(OTHER) && ./gradlew :sample-android:verifyRoborazziDebugScreenshotbot
+	cd $(OTHER) && $(GRADLEW) :sample-android:recordRoborazziDebugScreenshotbot
+	cd $(OTHER) && $(GRADLEW) :sample-android:verifyRoborazziDebugScreenshotbot
 
 cpst-integration: publish
 	@echo
@@ -46,7 +57,7 @@ cpst-integration: publish
 
 	$(MAKE) update-other-repo
 
-	cd $(OTHER) && ./gradlew --configuration-cache --stacktrace recordAndVerifyDebugScreenshotTest
+	cd $(OTHER) && $(GRADLEW) --configuration-cache --stacktrace recordAndVerifyDebugScreenshotTest
 
 fix-version:
 	cd $(OTHER) && if test -f build.gradle.kts ; then \
