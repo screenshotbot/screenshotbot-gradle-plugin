@@ -39,12 +39,20 @@ public class DownloadRecorderTask extends BaseRecorderTask {
 
     @TaskAction
     public void downloadRecorder() {
+        // installer.sh only does a plain `mkdir` (and swallows the error), so
+        // the parent directories have to exist before we get there.
+        var dir = new File(getScreenshotbotDir());
+        if (!dir.isDirectory() && !dir.mkdirs()) {
+            throw new IllegalStateException("Could not create the Screenshotbot directory: " + dir);
+        }
+
         execOperations.exec((it) -> {
             var reader = new BufferedReader(
                     new InputStreamReader(
                             DownloadRecorderTask.class.getResourceAsStream("/io/screenshotbot/gradle/recorder.sh")));
             var shContents = readAll(reader);
 
+            it.environment("SCREENSHOTBOT_DIR", dir.toString());
             it.setExecutable("bash");
             ArrayList<String> args = new ArrayList<String>();
             args.add("-c");
