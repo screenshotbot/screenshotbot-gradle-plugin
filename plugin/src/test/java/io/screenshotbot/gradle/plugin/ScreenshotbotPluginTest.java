@@ -1,6 +1,8 @@
 package io.screenshotbot.gradle.plugin;
 
+import org.gradle.api.Project;
 import org.gradle.internal.impldep.org.junit.Before;
+import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -55,5 +57,41 @@ class ScreenshotbotPluginTest {
     void doesntRemoveTrailingFlag() {
         extension.setExtraArgs(List.of("--repo-url"));
         assertEquals(List.of("--repo-url"), extension.getExtraArgs());
+    }
+
+    @Test
+    void registersDownloadTaskWhenAppliedToRoot() {
+        Project root = ProjectBuilder.builder().build();
+        root.getPlugins().apply(ScreenshotbotPlugin.class);
+
+        assertNotNull(root.getTasks().findByName("downloadScreenshotbotRecorder"));
+    }
+
+    /*
+     * Without Isolated Projects a subproject still registers the task on the
+     * root project, so that existing builds that only apply the plugin to their
+     * modules keep working. (ProjectBuilder can't turn Isolated Projects on, so
+     * the other branch isn't covered here.)
+     */
+    @Test
+    void subprojectRegistersDownloadTaskOnTheRootProject() {
+        Project root = ProjectBuilder.builder().build();
+        Project child = ProjectBuilder.builder().withName("app").withParent(root).build();
+        child.getPlugins().apply(ScreenshotbotPlugin.class);
+
+        assertNotNull(root.getTasks().findByName("downloadScreenshotbotRecorder"));
+        assertNull(child.getTasks().findByName("downloadScreenshotbotRecorder"));
+    }
+
+    @Test
+    void onlyRegistersTheDownloadTaskOnce() {
+        Project root = ProjectBuilder.builder().build();
+        Project first = ProjectBuilder.builder().withName("app").withParent(root).build();
+        Project second = ProjectBuilder.builder().withName("ui-toolkit").withParent(root).build();
+
+        first.getPlugins().apply(ScreenshotbotPlugin.class);
+        second.getPlugins().apply(ScreenshotbotPlugin.class);
+
+        assertNotNull(root.getTasks().findByName("downloadScreenshotbotRecorder"));
     }
 }

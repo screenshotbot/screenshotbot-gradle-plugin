@@ -16,12 +16,14 @@ Currently we support:
 
 # Getting started
 
+This plugin requires Gradle 8.5 or later.
+
 Including the plugin is pretty straightforward. In your
 `build.gradle`, add the following lines
 
 ```
 plugins {
-  id 'io.screenshotbot.plugin' version '1.29.11'
+  id 'io.screenshotbot.plugin' version '1.29.12'
 }
 ```
 
@@ -46,6 +48,30 @@ we'll run the record step and upload the screenshots to Screenshotbot, and also
 process information from you CI environment to figure out things like which Pull Request to
 send notifications on. On CI, you will have to set the `SCREENSHOTBOT_API_KEY` and `SCREENSHOTBOT_API_SECRET` environment variables.
 
+
+# Isolated Projects
+
+If you have [Isolated
+Projects](https://docs.gradle.org/current/userguide/isolated_projects.html)
+enabled (`org.gradle.isolated-projects=true`), you also have to apply
+the plugin to your **root** `build.gradle`, even if the root project
+has no screenshot tests of its own:
+
+```groovy
+plugins {
+  id 'io.screenshotbot.plugin' version '1.29.12'
+}
+```
+
+The plugin registers a single `:downloadScreenshotbotRecorder` task
+that all your modules share. Isolated Projects doesn't allow a
+subproject to register a task on the root project, so the root project
+has to do it itself.
+
+Note that `apply false` is not enough here: that only puts the plugin
+on the classpath without applying it, so the task never gets
+registered. If you forget this, the build fails with `Task with path
+':downloadScreenshotbotRecorder' not found in root project`.
 
 # Configure Enterprise or OSS Installations
 

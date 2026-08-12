@@ -1,11 +1,17 @@
 package io.screenshotbot.gradle.plugin;
 
 import org.gradle.api.*;
+import org.gradle.api.configuration.BuildFeatures;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScreenshotbotPlugin implements Plugin<Project> {
+public abstract class ScreenshotbotPlugin implements Plugin<Project> {
+
+    @Inject
+    protected abstract BuildFeatures getBuildFeatures();
+
     public static class Extension {
 
         private String hostname = "https://api.screenshotbot.io";
@@ -139,9 +145,38 @@ public class ScreenshotbotPlugin implements Plugin<Project> {
         registerRootTask(target, "downloadScreenshotbotRecorder", DownloadRecorderTask.class);
     }
 
-    private static void registerRootTask(Project target, String taskName, Class<? extends Task> taskClass) {
-        if (target.getRootProject().getTasks().findByName(taskName) == null) {
-            target.getRootProject().getTasks().register(taskName, taskClass);
+    /*
+     * There's a single :downloadScreenshotbotRecorder shared by every module, so
+     * it belongs on the root project.
+     *
+     * Isolated Projects forbids touching another project's task container, so
+     * when it's active we can only register the task if we're being applied to
+     * the root project ourselves. That's why users with Isolated Projects have
+     * to apply this plugin to their root project too. (See GitHub #5.)
+     *
+     * Depending on :downloadScreenshotbotRecorder from another project is still
+     * allowed under Isolated Projects, so the tasks that use the recorder don't
+     * need to know which of these two paths we took.
+     */
+    private void registerRootTask(Project target, String taskName, Class<? extends Task> taskClass) {
+        if (isIsolatedProjects()) {
+            if (!Project.PATH_SEPARATOR.equals(target.getPath())) {
+                // The root project's copy of the plugin registers this for us.
+                return;
+            }
+            registerIfAbsent(target, taskName, taskClass);
+        } else {
+            registerIfAbsent(target.getRootProject(), taskName, taskClass);
+        }
+    }
+
+    private boolean isIsolatedProjects() {
+        return getBuildFeatures().getIsolatedProjects().getActive().getOrElse(false);
+    }
+
+    private static void registerIfAbsent(Project host, String taskName, Class<? extends Task> taskClass) {
+        if (host.getTasks().findByName(taskName) == null) {
+            host.getTasks().register(taskName, taskClass);
         }
     }
 }

@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.29.12 - 2026-08-12
+
+### Changed
+
+- Support Gradle's Isolated Projects. When it's enabled, the plugin
+  must also be applied to the root project so that
+  `:downloadScreenshotbotRecorder` can be registered there; see the
+  README. (See GitHub #5.)
+
+- The recorder is now installed into `<root>/build/screenshotbot`
+  rather than the root project's configured `buildDirectory`. These are
+  the same directory unless you've customized `buildDir` on the root
+  project.
+
+- The plugin now requires Gradle 8.5 or later.
+
 ## 1.28.11 - 2026-01-17
 
 ### Changed

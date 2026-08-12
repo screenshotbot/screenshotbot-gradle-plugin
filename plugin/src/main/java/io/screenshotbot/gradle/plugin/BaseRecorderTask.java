@@ -16,10 +16,10 @@ public class BaseRecorderTask extends DefaultTask {
     public ExecOperations execOperations = null;
 
     /*
-     * The directory that the recorder is installed into. We use the root
-     * project's build directory, since :downloadScreenshotbotRecorder is
-     * registered on the root project and every module has to agree on where the
-     * binary lives. This is passed to the installer as SCREENSHOTBOT_DIR.
+     * The directory that the recorder is installed into. We anchor this at the
+     * root of the build, since :downloadScreenshotbotRecorder is registered on
+     * the root project and every module has to agree on where the binary lives.
+     * This is passed to the installer as SCREENSHOTBOT_DIR.
      */
     private final String screenshotbotDir;
 
@@ -33,8 +33,11 @@ public class BaseRecorderTask extends DefaultTask {
         if (override != null && !override.isEmpty()) {
             return override;
         }
-        return getProject().getRootProject().getLayout().getBuildDirectory()
-                .dir("screenshotbot").get().getAsFile().getAbsolutePath();
+        // Deliberately not rootProject.layout.buildDirectory: reading another
+        // project's layout is forbidden under Isolated Projects. rootDir is
+        // allowed, and it gives every module the same answer. (GitHub #5)
+        return new File(new File(getProject().getRootDir(), "build"), "screenshotbot")
+                .getAbsolutePath();
     }
 
     @Internal
