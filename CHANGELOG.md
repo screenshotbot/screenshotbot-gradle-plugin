@@ -16,7 +16,7 @@
 
 - The plugin now requires Gradle 8.5 or later.
 
-## 1.28.11 - 2026-01-17
+## 1.29.11 - 2026-01-17
 
 ### Changed
 
