@@ -61,9 +61,11 @@ public class BaseRecorderTask extends DefaultTask {
     protected ArrayList<String> prepareArgs() {
         ArrayList<String> args = new ArrayList<>();
 
-        assert (hostname != null);
-        args.add("--api-hostname");
-        args.add(hostname);
+        if (hostname != null && !hostname.isEmpty()) {
+            // If unset, the CLI figures out the hostname from the API secret.
+            args.add("--api-hostname");
+            args.add(hostname);
+        }
         return args;
     }
 }

@@ -14,7 +14,11 @@ public abstract class ScreenshotbotPlugin implements Plugin<Project> {
 
     public static class Extension {
 
-        private String hostname = "https://api.screenshotbot.io";
+        /*
+         * When null, we don't pass --api-hostname to the CLI at all, and the
+         * CLI decodes the hostname from the API secret.
+         */
+        private String hostname = null;
         
         private String batch = null;
 
