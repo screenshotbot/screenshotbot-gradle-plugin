@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.29.13 - 2026-08-28
+
+### Changed
+
+- `--api-hostname` is no longer passed to the CLI when the `hostname`
+  extension property is unset. It previously defaulted to
+  `https://api.screenshotbot.io`; now it defaults to null and the CLI
+  decodes the hostname from the API secret instead. Set `hostname`
+  explicitly if you need to override it.
+
 ## 1.29.12 - 2026-08-12
 
 ### Changed
