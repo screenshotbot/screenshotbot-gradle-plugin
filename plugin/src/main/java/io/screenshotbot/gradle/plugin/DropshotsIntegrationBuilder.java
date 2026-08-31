@@ -39,8 +39,7 @@ public class DropshotsIntegrationBuilder extends AbstractIntegrationBuilder {
     }
 
     @Override
-    protected boolean isApplicableTask(Task task) {
-        String name = task.getName();
+    protected boolean isApplicableTaskName(String name) {
         return name.startsWith(PREFIX) && name.endsWith(SUFFIX);
     }
 

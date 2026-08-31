@@ -19,8 +19,8 @@ public class PaparazziIntegrationBuilder extends AbstractIntegrationBuilder {
     }
 
     @Override
-    protected boolean isApplicableTask(Task task) {
-        return task.getName().startsWith("recordPaparazzi");
+    protected boolean isApplicableTaskName(String name) {
+        return name.startsWith("recordPaparazzi");
     }
 
 

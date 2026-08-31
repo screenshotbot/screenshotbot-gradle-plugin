@@ -22,8 +22,8 @@ public class ComposePreviewsIntegrationBuilder extends AbstractIntegrationBuilde
     }
 
     @Override
-    protected boolean isApplicableTask(Task task) {
-        return task.getName().startsWith(PREFIX) && task.getName().endsWith(SUFFIX);
+    protected boolean isApplicableTaskName(String name) {
+        return name.startsWith(PREFIX) && name.endsWith(SUFFIX);
     }
 
     @Override

@@ -22,8 +22,8 @@ public class RoborazziIntegrationBuilder extends AbstractIntegrationBuilder {
     }
 
     @Override
-    protected boolean isApplicableTask(Task task) {
-        return task.getName().startsWith(PREFIX);
+    protected boolean isApplicableTaskName(String name) {
+        return name.startsWith(PREFIX);
     }
 
     @Override

@@ -38,8 +38,13 @@ public class ShotIntegrationBuilder extends AbstractIntegrationBuilder{
     }
 
     @Override
+    protected boolean isApplicableTaskName(String name) {
+        return name.endsWith(SUFFIX);
+    }
+
+    @Override
     protected boolean isApplicableTask(Task task) {
-        return task.getName().endsWith(SUFFIX) && task.getGroup().toLowerCase().equals("shot");
+        return task.getGroup().toLowerCase().equals("shot");
     }
 
     @Override

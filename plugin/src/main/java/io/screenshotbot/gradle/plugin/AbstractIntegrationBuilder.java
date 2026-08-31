@@ -157,14 +157,19 @@ public abstract class AbstractIntegrationBuilder {
                 project.afterEvaluate((project) -> {
                     TaskContainer tasks = project.getTasks();
 
-                    // Avoid a ConcurrentModificationException
-                    var filtered = tasks.stream().filter((it) -> isApplicableTask(it)).toList();
-
-                    filtered.stream().forEach((task) -> {
-                        prepareTask(task, project, "record");
-                        prepareTask(task, project, "verify");
-                        prepareTask(task, project, "ci");
-                    });
+                    // getNames() doesn't realize registered tasks, so unrelated tasks keep
+                    // Gradle's configuration avoidance. The copy also avoids a
+                    // ConcurrentModificationException, since prepareTask registers new tasks.
+                    for (String name : new ArrayList<>(tasks.getNames())) {
+                        if (isApplicableTaskName(name)) {
+                            Task task = tasks.getByName(name);
+                            if (isApplicableTask(task)) {
+                                prepareTask(task, project, "record");
+                                prepareTask(task, project, "verify");
+                                prepareTask(task, project, "ci");
+                            }
+                        }
+                    }
                 });
             }
         };
@@ -176,7 +181,19 @@ public abstract class AbstractIntegrationBuilder {
     @NotNull
     protected abstract String getPluginId();
 
-    protected abstract boolean isApplicableTask(Task task);
+    /*
+     * Whether a task with this name should be realized and wrapped. Only tasks
+     * matching this are ever realized, so keep it purely name-based.
+     */
+    protected abstract boolean isApplicableTaskName(String name);
+
+    /*
+     * A second filter on the realized task, for integrations that can't decide
+     * from the name alone (e.g. Shot, which also checks the task's group).
+     */
+    protected boolean isApplicableTask(Task task) {
+        return true;
+    }
 
     /*
      * This might be the same as getSnapshotsDir(), but for example with Paparazzi the
