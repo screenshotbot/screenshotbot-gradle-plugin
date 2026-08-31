@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.29.14 - 2026-08-31
+
+### Changed
+
+- The plugin no longer eagerly realizes every task in the project when
+  discovering screenshot tasks, restoring Gradle's task configuration
+  avoidance for unrelated tasks. Tasks are now discovered by name and
+  only matching tasks are realized. ([#6](https://github.com/screenshotbot/screenshotbot-gradle-plugin/issues/6))
+
 ## 1.29.13 - 2026-08-28
 
 ### Changed

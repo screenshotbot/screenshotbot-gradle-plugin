@@ -23,7 +23,7 @@ Including the plugin is pretty straightforward. In your
 
 ```
 plugins {
-  id 'io.screenshotbot.plugin' version '1.29.13'
+  id 'io.screenshotbot.plugin' version '1.29.14'
 }
 ```
 
@@ -59,7 +59,7 @@ has no screenshot tests of its own:
 
 ```groovy
 plugins {
-  id 'io.screenshotbot.plugin' version '1.29.13'
+  id 'io.screenshotbot.plugin' version '1.29.14'
 }
 ```
 
